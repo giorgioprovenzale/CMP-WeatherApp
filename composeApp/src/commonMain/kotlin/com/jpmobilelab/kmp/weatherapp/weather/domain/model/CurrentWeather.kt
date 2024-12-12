@@ -4,5 +4,7 @@ data class CurrentWeather(
     val temperature2m: Float,
     val apparentTemperature: Float,
     val isDay: Int,
-    val weatherCode: Int
+    val weatherCode: Int,
+    val dayImageUrl: String,
+    val nightImageUrl: String
 )
