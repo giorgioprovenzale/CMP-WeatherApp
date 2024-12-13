@@ -37,7 +37,7 @@ fun WeatherScreen(weather: Weather?) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { androidx.compose.material3.Text("Weather Information") }
+                title = { Text("Weather Information") }
             )
         }
     ) { innerPadding ->
