@@ -8,5 +8,8 @@ data class CurrentWeatherDto(
     @SerialName("temperature_2m") val temperature2m: Float,
     @SerialName("apparent_temperature") val apparentTemperature: Float,
     @SerialName("is_day") val isDay: Int,
-    @SerialName("weather_code") val weatherCode: Int
-)
+    @SerialName("weather_code") val weatherCode: Int,
+    @SerialName("relative_humidity_2m") val relativeHumidity2m: Float,
+    @SerialName("wind_speed_10m") val windSpeed10m: Float,
+
+    )
