@@ -1,11 +1,14 @@
 package com.jpmobilelab.kmp.weatherapp
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.jpmobilelab.kmp.weatherapp.theme.DarkColorPalette
+import com.jpmobilelab.kmp.weatherapp.theme.LightColorPalette
 import com.jpmobilelab.kmp.weatherapp.weather.ui.WeatherScreenRoot
 import com.jpmobilelab.kmp.weatherapp.weather.ui.WeatherViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -14,7 +17,10 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
+    MaterialTheme(
+
+        colorScheme = if (isSystemInDarkTheme()) DarkColorPalette else LightColorPalette
+    ) {
         val navController = rememberNavController()
         NavHost(
             navController = navController,
