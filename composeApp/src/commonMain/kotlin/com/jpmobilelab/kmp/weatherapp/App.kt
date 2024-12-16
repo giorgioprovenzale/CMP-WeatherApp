@@ -9,8 +9,8 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.jpmobilelab.kmp.weatherapp.theme.DarkColorPalette
 import com.jpmobilelab.kmp.weatherapp.theme.LightColorPalette
-import com.jpmobilelab.kmp.weatherapp.weather.ui.WeatherScreenRoot
-import com.jpmobilelab.kmp.weatherapp.weather.ui.WeatherViewModel
+import com.jpmobilelab.kmp.weatherapp.ui.weather.WeatherScreenRoot
+import com.jpmobilelab.kmp.weatherapp.ui.weather.WeatherViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 

@@ -1,11 +1,11 @@
 package com.jpmobilelab.kmp.weatherapp.di
 
-import com.jpmobilelab.kmp.weatherapp.core.data.HttpClientFactory
-import com.jpmobilelab.kmp.weatherapp.weather.data.remote.KtorRemoteWeatherDataSource
-import com.jpmobilelab.kmp.weatherapp.weather.data.remote.RemoteWeatherDataSource
-import com.jpmobilelab.kmp.weatherapp.weather.domain.repository.DefaultWeatherRepository
-import com.jpmobilelab.kmp.weatherapp.weather.domain.repository.WeatherRepository
-import com.jpmobilelab.kmp.weatherapp.weather.ui.WeatherViewModel
+import com.jpmobilelab.kmp.weatherapp.data.core.HttpClientFactory
+import com.jpmobilelab.kmp.weatherapp.data.remote.KtorRemoteWeatherDataSource
+import com.jpmobilelab.kmp.weatherapp.data.remote.RemoteWeatherDataSource
+import com.jpmobilelab.kmp.weatherapp.domain.repository.DefaultWeatherRepository
+import com.jpmobilelab.kmp.weatherapp.domain.repository.WeatherRepository
+import com.jpmobilelab.kmp.weatherapp.ui.weather.WeatherViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf

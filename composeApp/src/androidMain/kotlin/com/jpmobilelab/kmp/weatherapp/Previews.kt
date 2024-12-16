@@ -14,10 +14,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cmp_weatherapp.composeapp.generated.resources.Res
 import cmp_weatherapp.composeapp.generated.resources.moderate_or_heavy_rain_shower
-import com.jpmobilelab.kmp.weatherapp.weather.domain.model.CurrentWeather
-import com.jpmobilelab.kmp.weatherapp.weather.domain.model.Weather
-import com.jpmobilelab.kmp.weatherapp.weather.ui.WeatherScreen
-import com.jpmobilelab.kmp.weatherapp.weather.ui.composables.TransparentBox
+import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentWeather
+import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
+import com.jpmobilelab.kmp.weatherapp.ui.composables.TransparentBox
+import com.jpmobilelab.kmp.weatherapp.ui.weather.WeatherScreen
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
