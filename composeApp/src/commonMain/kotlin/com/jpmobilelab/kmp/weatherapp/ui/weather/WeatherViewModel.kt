@@ -14,16 +14,20 @@ class WeatherViewModel(
     private val weatherRepository: WeatherRepository
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(WeatherState())
+    private val _state = MutableStateFlow<WeatherState>(WeatherState.Loading)
     val state = _state
-        .onStart {
-            weatherRepository.getCurrentWeatherData(latitude = 36.925682F, longitude = 14.730745F).onSuccess { weather ->
-                _state.update { it.copy(weather = weather) }
-            }
-        }
+        .onStart { fetchWeather() }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000L),
             initialValue = _state.value
         )
+
+    private suspend fun fetchWeather() {
+        _state.update { WeatherState.Loading }
+        weatherRepository.getCurrentWeatherData(latitude = 36.925682F, longitude = 14.730745F)
+            .onSuccess { weather ->
+                _state.update { WeatherState.Content(location = "Current Location", weather = weather) }
+            }
+    }
 }

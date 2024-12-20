@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -54,13 +55,13 @@ fun WeatherScreenRoot(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     WeatherScreen(
-        weather = state.weather,
+        state = state,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WeatherScreen(weather: Weather?) {
+fun WeatherScreen(state: WeatherState) {
 
     Scaffold(
         topBar = {
@@ -82,26 +83,52 @@ fun WeatherScreen(weather: Weather?) {
                 .scrollable(
                     state = rememberScrollState(),
                     orientation = Orientation.Vertical
-                ),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.Start
+                )
         ) {
-            WeatherMainProperties(weather)
+            when (state) {
+                WeatherState.Loading -> {
+                    WeatherLoading()
+                }
 
-            Spacer(Modifier.height(spacing_8x))
-
-            WeatherProperties(weather)
+                is WeatherState.Content -> {
+                    Text(
+                        text = state.location,
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    WeatherContent(state.weather)
+                }
+            }
         }
     }
 }
 
 @Composable
-private fun WeatherMainProperties(weather: Weather?) = weather?.current?.let {
-    Text(
-        text = "Current Location", // todo: get from API
-        style = MaterialTheme.typography.headlineLarge,
-        color = MaterialTheme.colorScheme.onSurface
+private fun WeatherLoading() {
+    Column(
+        modifier = Modifier.fillMaxWidth().padding(top = spacing_2x),
+        horizontalAlignment = Alignment.CenterHorizontally
     )
+    {
+        CircularProgressIndicator(
+            color = MaterialTheme.colorScheme.onSurface
+        )
+    }
+}
+
+@Composable
+private fun WeatherContent(weather: Weather) {
+    Column {
+        WeatherMainProperties(weather)
+
+        Spacer(Modifier.height(spacing_8x))
+
+        WeatherProperties(weather)
+    }
+}
+
+@Composable
+private fun WeatherMainProperties(weather: Weather?) = weather?.current?.let {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -185,7 +212,7 @@ private fun WeatherProperties(weather: Weather?) = weather?.current?.let {
         WeatherValueWithLabelAndIcon(
             icon = Res.drawable.ic_feels_like,
             label = stringResource(Res.string.feels_like),
-            subLabel = "${weather.current.relativeHumidity2m.toInt()}°",
+            subLabel = "${weather.current.apparentTemperature.toInt()}°",
         )
     }
 }

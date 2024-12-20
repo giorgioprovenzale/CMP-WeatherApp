@@ -20,6 +20,7 @@ import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
 import com.jpmobilelab.kmp.weatherapp.ui.composables.TransparentBox
 import com.jpmobilelab.kmp.weatherapp.ui.weather.WeatherScreen
+import com.jpmobilelab.kmp.weatherapp.ui.weather.WeatherState
 import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.painterResource
 
@@ -29,7 +30,18 @@ import org.jetbrains.compose.resources.painterResource
 fun WeatherScreenPreview() {
     MaterialTheme {
         WeatherScreen(
-            createMockWeather()
+            WeatherState.Content("Current Location", createMockWeather())
+        )
+    }
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+fun WeatherScreenLoadingPreview() {
+    MaterialTheme {
+        WeatherScreen(
+            WeatherState.Loading
         )
     }
 }
