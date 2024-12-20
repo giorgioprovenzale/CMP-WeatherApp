@@ -1,9 +1,9 @@
 package com.jpmobilelab.kmp.weatherapp.data.remote
 
 import com.jpmobilelab.kmp.weatherapp.data.core.safeCall
+import com.jpmobilelab.kmp.weatherapp.data.dto.WeatherDto
 import com.jpmobilelab.kmp.weatherapp.domain.core.DataError
 import com.jpmobilelab.kmp.weatherapp.domain.core.Result
-import com.jpmobilelab.kmp.weatherapp.weather.data.dto.WeatherDto
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter

@@ -1,4 +1,4 @@
-package com.jpmobilelab.kmp.weatherapp.weather.data.dto
+package com.jpmobilelab.kmp.weatherapp.data.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -11,5 +11,4 @@ data class CurrentWeatherDto(
     @SerialName("weather_code") val weatherCode: Int,
     @SerialName("relative_humidity_2m") val relativeHumidity2m: Float,
     @SerialName("wind_speed_10m") val windSpeed10m: Float,
-
-    )
+)

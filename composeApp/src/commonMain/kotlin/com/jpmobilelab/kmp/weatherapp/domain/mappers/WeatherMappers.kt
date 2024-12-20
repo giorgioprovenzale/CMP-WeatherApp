@@ -55,10 +55,10 @@ import cmp_weatherapp.composeapp.generated.resources.ic_96_thunderstorm_with_sli
 import cmp_weatherapp.composeapp.generated.resources.ic_96_thunderstorm_with_slight_hail_night
 import cmp_weatherapp.composeapp.generated.resources.ic_99_thunderstorm_with_heavy_hail_day
 import cmp_weatherapp.composeapp.generated.resources.ic_99_thunderstorm_with_heavy_hail_night
+import com.jpmobilelab.kmp.weatherapp.data.dto.CurrentWeatherDto
+import com.jpmobilelab.kmp.weatherapp.data.dto.WeatherDto
 import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
-import com.jpmobilelab.kmp.weatherapp.weather.data.dto.CurrentWeatherDto
-import com.jpmobilelab.kmp.weatherapp.weather.data.dto.WeatherDto
 import org.jetbrains.compose.resources.DrawableResource
 
 fun WeatherDto.toWeather(): Weather = Weather(
@@ -148,6 +148,6 @@ private fun getWeatherDescription(code: Int, isDay: Boolean): String {
         95 -> "Thunderstorm"
         96 -> "Light Thunderstorms With Hail"
         99 -> "Thunderstorm With Hail"
-        else -> if (isDay) "Unknown" else "Unknown"
+        else -> "Unknown"
     }
 }

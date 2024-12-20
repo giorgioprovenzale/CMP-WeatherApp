@@ -4,9 +4,9 @@ import com.jpmobilelab.kmp.weatherapp.data.remote.RemoteWeatherDataSource
 import com.jpmobilelab.kmp.weatherapp.domain.core.DataError
 import com.jpmobilelab.kmp.weatherapp.domain.core.Result
 import com.jpmobilelab.kmp.weatherapp.domain.core.map
+import com.jpmobilelab.kmp.weatherapp.domain.mappers.toCurrentWeather
+import com.jpmobilelab.kmp.weatherapp.domain.mappers.toWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
-import com.jpmobilelab.kmp.weatherapp.weather.domain.mappers.toCurrentWeather
-import com.jpmobilelab.kmp.weatherapp.weather.domain.mappers.toWeather
 
 class DefaultWeatherRepository(
     private val remoteWeatherDataSource: RemoteWeatherDataSource,

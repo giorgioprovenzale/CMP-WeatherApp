@@ -1,4 +1,4 @@
-package com.jpmobilelab.kmp.weatherapp.weather.data.dto
+package com.jpmobilelab.kmp.weatherapp.data.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
