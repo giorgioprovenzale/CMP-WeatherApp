@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cmp_weatherapp.composeapp.generated.resources.Res
+import cmp_weatherapp.composeapp.generated.resources.ic_0_clear_day
+import cmp_weatherapp.composeapp.generated.resources.ic_0_clear_night
 import cmp_weatherapp.composeapp.generated.resources.moderate_or_heavy_rain_shower
 import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
@@ -43,13 +45,13 @@ fun createMockWeather() = Weather(
 private fun createMockCurrentWeather() = CurrentWeather(
     temperature2m = 22.5f,
     apparentTemperature = 23.0f,
-    isDay = 1,
+    isDay = true,
     weatherCode = 2,
     relativeHumidity2m = 50.0f,
     windSpeed10m = 10.0f,
     weatherDescription = "Partly Cloudy",
-    dayImageUrl = "https://openweathermap.org/img/wn/02d@2x.png",
-    nightImageUrl = "https://openweathermap.org/img/wn/02n@2x.png"
+    dayDrawableResource = Res.drawable.ic_0_clear_day,
+    nightDrawableResource = Res.drawable.ic_0_clear_night,
 )
 
 @Composable

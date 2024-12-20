@@ -31,7 +31,6 @@ import cmp_weatherapp.composeapp.generated.resources.humidity
 import cmp_weatherapp.composeapp.generated.resources.ic_feels_like
 import cmp_weatherapp.composeapp.generated.resources.ic_humidity
 import cmp_weatherapp.composeapp.generated.resources.ic_wind
-import cmp_weatherapp.composeapp.generated.resources.moderate_or_heavy_rain_shower
 import cmp_weatherapp.composeapp.generated.resources.wind
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
 import com.jpmobilelab.kmp.weatherapp.theme.spacing_0_5x
@@ -107,7 +106,7 @@ private fun WeatherMainProperties(weather: Weather?) = weather?.current?.let {
         color = MaterialTheme.colorScheme.onSurface
     )
     Image(
-        painter = painterResource(Res.drawable.moderate_or_heavy_rain_shower), // todo: get from API mapping to local icon
+        painter = painterResource(weather.current.getDrawableResource()),
         contentDescription = null,
         modifier = Modifier.size(weatherIconsSizeLarge)
     )

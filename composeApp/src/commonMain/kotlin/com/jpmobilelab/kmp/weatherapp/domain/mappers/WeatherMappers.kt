@@ -1,9 +1,65 @@
-package com.jpmobilelab.kmp.weatherapp.weather.domain.mappers
+package com.jpmobilelab.kmp.weatherapp.domain.mappers
 
+import cmp_weatherapp.composeapp.generated.resources.Res
+import cmp_weatherapp.composeapp.generated.resources.ic_0_clear_day
+import cmp_weatherapp.composeapp.generated.resources.ic_0_clear_night
+import cmp_weatherapp.composeapp.generated.resources.ic_1_mainly_clear_day
+import cmp_weatherapp.composeapp.generated.resources.ic_1_mainly_clear_night
+import cmp_weatherapp.composeapp.generated.resources.ic_2_partly_cloudy_day
+import cmp_weatherapp.composeapp.generated.resources.ic_2_partly_cloudy_night
+import cmp_weatherapp.composeapp.generated.resources.ic_3_overcast_day
+import cmp_weatherapp.composeapp.generated.resources.ic_3_overcast_night
+import cmp_weatherapp.composeapp.generated.resources.ic_45_fog_day
+import cmp_weatherapp.composeapp.generated.resources.ic_45_fog_night
+import cmp_weatherapp.composeapp.generated.resources.ic_48_freezing_fog_day
+import cmp_weatherapp.composeapp.generated.resources.ic_48_freezing_fog_night
+import cmp_weatherapp.composeapp.generated.resources.ic_51_light_drizzle_day
+import cmp_weatherapp.composeapp.generated.resources.ic_51_light_drizzle_night
+import cmp_weatherapp.composeapp.generated.resources.ic_53_moderate_drizzle_day
+import cmp_weatherapp.composeapp.generated.resources.ic_53_moderate_drizzle_night
+import cmp_weatherapp.composeapp.generated.resources.ic_55_dense_drizzle_day
+import cmp_weatherapp.composeapp.generated.resources.ic_55_dense_drizzle_night
+import cmp_weatherapp.composeapp.generated.resources.ic_56_light_freezing_drizzle_day
+import cmp_weatherapp.composeapp.generated.resources.ic_56_light_freezing_drizzle_night
+import cmp_weatherapp.composeapp.generated.resources.ic_57_dense_freezing_drizzle_day
+import cmp_weatherapp.composeapp.generated.resources.ic_57_dense_freezing_drizzle_night
+import cmp_weatherapp.composeapp.generated.resources.ic_61_slight_rain_day
+import cmp_weatherapp.composeapp.generated.resources.ic_61_slight_rain_night
+import cmp_weatherapp.composeapp.generated.resources.ic_63_moderate_rain_day
+import cmp_weatherapp.composeapp.generated.resources.ic_63_moderate_rain_night
+import cmp_weatherapp.composeapp.generated.resources.ic_65_heavy_rain_day
+import cmp_weatherapp.composeapp.generated.resources.ic_65_heavy_rain_night
+import cmp_weatherapp.composeapp.generated.resources.ic_67_heavy_freezing_rain_day
+import cmp_weatherapp.composeapp.generated.resources.ic_67_heavy_freezing_rain_night
+import cmp_weatherapp.composeapp.generated.resources.ic_71_light_snow_day
+import cmp_weatherapp.composeapp.generated.resources.ic_71_light_snow_night
+import cmp_weatherapp.composeapp.generated.resources.ic_73_moderate_snow_day
+import cmp_weatherapp.composeapp.generated.resources.ic_73_moderate_snow_night
+import cmp_weatherapp.composeapp.generated.resources.ic_75_heavy_snow_day
+import cmp_weatherapp.composeapp.generated.resources.ic_75_heavy_snow_night
+import cmp_weatherapp.composeapp.generated.resources.ic_77_snow_grains_day
+import cmp_weatherapp.composeapp.generated.resources.ic_77_snow_grains_night
+import cmp_weatherapp.composeapp.generated.resources.ic_80_slight_rain_shower_day
+import cmp_weatherapp.composeapp.generated.resources.ic_80_slight_rain_shower_night
+import cmp_weatherapp.composeapp.generated.resources.ic_81_moderate_rain_shower_day
+import cmp_weatherapp.composeapp.generated.resources.ic_81_moderate_rain_shower_night
+import cmp_weatherapp.composeapp.generated.resources.ic_82_violent_rain_shower_day
+import cmp_weatherapp.composeapp.generated.resources.ic_82_violent_rain_shower_night
+import cmp_weatherapp.composeapp.generated.resources.ic_85_light_snow_showers_day
+import cmp_weatherapp.composeapp.generated.resources.ic_85_light_snow_showers_night
+import cmp_weatherapp.composeapp.generated.resources.ic_86_heavy_snow_showers_day
+import cmp_weatherapp.composeapp.generated.resources.ic_86_heavy_snow_showers_night
+import cmp_weatherapp.composeapp.generated.resources.ic_95_slight_thunderstorm_day
+import cmp_weatherapp.composeapp.generated.resources.ic_95_slight_thunderstorm_night
+import cmp_weatherapp.composeapp.generated.resources.ic_96_thunderstorm_with_slight_hail_day
+import cmp_weatherapp.composeapp.generated.resources.ic_96_thunderstorm_with_slight_hail_night
+import cmp_weatherapp.composeapp.generated.resources.ic_99_thunderstorm_with_heavy_hail_day
+import cmp_weatherapp.composeapp.generated.resources.ic_99_thunderstorm_with_heavy_hail_night
 import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
 import com.jpmobilelab.kmp.weatherapp.weather.data.dto.CurrentWeatherDto
 import com.jpmobilelab.kmp.weatherapp.weather.data.dto.WeatherDto
+import org.jetbrains.compose.resources.DrawableResource
 
 fun WeatherDto.toWeather(): Weather = Weather(
     latitude = latitude,
@@ -16,33 +72,49 @@ fun WeatherDto.toWeather(): Weather = Weather(
 fun CurrentWeatherDto.toCurrentWeather(): CurrentWeather = CurrentWeather(
     temperature2m = temperature2m,
     apparentTemperature = apparentTemperature,
-    isDay = isDay,
+    isDay = isDay.toString().toBoolean(),
     weatherCode = weatherCode,
     relativeHumidity2m = relativeHumidity2m,
     windSpeed10m = windSpeed10m,
     weatherDescription = getWeatherDescription(
         weatherCode, isDay.toString().toBoolean()
     ),
-    dayImageUrl = getWeatherImageUrl(
+    dayDrawableResource = getDrawableResource(
         weatherCode, true
     ),
-    nightImageUrl = getWeatherImageUrl(weatherCode, false)
+    nightDrawableResource = getDrawableResource(weatherCode, false)
 )
 
-private fun getWeatherImageUrl(code: Int, isDay: Boolean): String {
+private fun getDrawableResource(code: Int, isDay: Boolean): DrawableResource {
     return when (code) {
-        0 -> if (isDay) "https://openweathermap.org/img/wn/01d@2x.png" else "https://openweathermap.org/img/wn/01n@2x.png"
-        1 -> if (isDay) "https://openweathermap.org/img/wn/01d@2x.png" else "https://openweathermap.org/img/wn/01n@2x.png"
-        2 -> if (isDay) "https://openweathermap.org/img/wn/02d@2x.png" else "https://openweathermap.org/img/wn/02n@2x.png"
-        3 -> if (isDay) "https://openweathermap.org/img/wn/03d@2x.png" else "https://openweathermap.org/img/wn/03n@2x.png"
-        45, 48 -> if (isDay) "https://openweathermap.org/img/wn/50d@2x.png" else "https://openweathermap.org/img/wn/50n@2x.png"
-        51, 53, 55, 56, 57 -> if (isDay) "https://openweathermap.org/img/wn/09d@2x.png" else "https://openweathermap.org/img/wn/09n@2x.png"
-        61, 63, 65, 66, 67 -> if (isDay) "https://openweathermap.org/img/wn/10d@2x.png" else "https://openweathermap.org/img/wn/10n@2x.png"
-        71, 73, 75, 77 -> if (isDay) "https://openweathermap.org/img/wn/13d@2x.png" else "https://openweathermap.org/img/wn/13n@2x.png"
-        80, 81, 82 -> if (isDay) "https://openweathermap.org/img/wn/09d@2x.png" else "https://openweathermap.org/img/wn/09n@2x.png"
-        85, 86 -> if (isDay) "https://openweathermap.org/img/wn/13d@2x.png" else "https://openweathermap.org/img/wn/13n@2x.png"
-        95, 96, 99 -> if (isDay) "https://openweathermap.org/img/wn/11d@2x.png" else "https://openweathermap.org/img/wn/11n@2x.png"
-        else -> if (isDay) "https://openweathermap.org/img/wn/01d@2x.png" else "https://openweathermap.org/img/wn/01n@2x.png"
+        0 -> if (isDay) Res.drawable.ic_0_clear_day else Res.drawable.ic_0_clear_night
+        1 -> if (isDay) Res.drawable.ic_1_mainly_clear_day else Res.drawable.ic_1_mainly_clear_night
+        2 -> if (isDay) Res.drawable.ic_2_partly_cloudy_day else Res.drawable.ic_2_partly_cloudy_night
+        3 -> if (isDay) Res.drawable.ic_3_overcast_day else Res.drawable.ic_3_overcast_night
+        45 -> if (isDay) Res.drawable.ic_45_fog_day else Res.drawable.ic_45_fog_night
+        48 -> if (isDay) Res.drawable.ic_48_freezing_fog_day else Res.drawable.ic_48_freezing_fog_night
+        51 -> if (isDay) Res.drawable.ic_51_light_drizzle_day else Res.drawable.ic_51_light_drizzle_night
+        53 -> if (isDay) Res.drawable.ic_53_moderate_drizzle_day else Res.drawable.ic_53_moderate_drizzle_night
+        55 -> if (isDay) Res.drawable.ic_55_dense_drizzle_day else Res.drawable.ic_55_dense_drizzle_night
+        56 -> if (isDay) Res.drawable.ic_56_light_freezing_drizzle_day else Res.drawable.ic_56_light_freezing_drizzle_night
+        57 -> if (isDay) Res.drawable.ic_57_dense_freezing_drizzle_day else Res.drawable.ic_57_dense_freezing_drizzle_night
+        61 -> if (isDay) Res.drawable.ic_61_slight_rain_day else Res.drawable.ic_61_slight_rain_night
+        63 -> if (isDay) Res.drawable.ic_63_moderate_rain_day else Res.drawable.ic_63_moderate_rain_night
+        65 -> if (isDay) Res.drawable.ic_65_heavy_rain_day else Res.drawable.ic_65_heavy_rain_night
+        67 -> if (isDay) Res.drawable.ic_67_heavy_freezing_rain_day else Res.drawable.ic_67_heavy_freezing_rain_night
+        71 -> if (isDay) Res.drawable.ic_71_light_snow_day else Res.drawable.ic_71_light_snow_night
+        73 -> if (isDay) Res.drawable.ic_73_moderate_snow_day else Res.drawable.ic_73_moderate_snow_night
+        75 -> if (isDay) Res.drawable.ic_75_heavy_snow_day else Res.drawable.ic_75_heavy_snow_night
+        77 -> if (isDay) Res.drawable.ic_77_snow_grains_day else Res.drawable.ic_77_snow_grains_night
+        80 -> if (isDay) Res.drawable.ic_80_slight_rain_shower_day else Res.drawable.ic_80_slight_rain_shower_night
+        81 -> if (isDay) Res.drawable.ic_81_moderate_rain_shower_day else Res.drawable.ic_81_moderate_rain_shower_night
+        82 -> if (isDay) Res.drawable.ic_82_violent_rain_shower_day else Res.drawable.ic_82_violent_rain_shower_night
+        85 -> if (isDay) Res.drawable.ic_85_light_snow_showers_day else Res.drawable.ic_85_light_snow_showers_night
+        86 -> if (isDay) Res.drawable.ic_86_heavy_snow_showers_day else Res.drawable.ic_86_heavy_snow_showers_night
+        95 -> if (isDay) Res.drawable.ic_95_slight_thunderstorm_day else Res.drawable.ic_95_slight_thunderstorm_night
+        96 -> if (isDay) Res.drawable.ic_96_thunderstorm_with_slight_hail_day else Res.drawable.ic_96_thunderstorm_with_slight_hail_night
+        99 -> if (isDay) Res.drawable.ic_99_thunderstorm_with_heavy_hail_day else Res.drawable.ic_99_thunderstorm_with_heavy_hail_night
+        else -> if (isDay) Res.drawable.ic_0_clear_day else Res.drawable.ic_0_clear_night
     }
 }
 
