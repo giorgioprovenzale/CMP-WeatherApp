@@ -22,7 +22,7 @@ val spacing_13x = 104.dp
 val spacing_14x = 112.dp
 val spacing_15x = 120.dp
 
-val weatherIconsSizeLarge = 120.dp
+val weatherIconsSizeLarge = 140.dp
 val weatherIconsSizeMedium = 80.dp
 val weatherIconsSizeSmall = 40.dp
 

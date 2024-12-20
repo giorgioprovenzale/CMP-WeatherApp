@@ -31,12 +31,14 @@ import cmp_weatherapp.composeapp.generated.resources.humidity
 import cmp_weatherapp.composeapp.generated.resources.ic_feels_like
 import cmp_weatherapp.composeapp.generated.resources.ic_humidity
 import cmp_weatherapp.composeapp.generated.resources.ic_wind
+import cmp_weatherapp.composeapp.generated.resources.last_update
 import cmp_weatherapp.composeapp.generated.resources.wind
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
 import com.jpmobilelab.kmp.weatherapp.theme.spacing_0_5x
-import com.jpmobilelab.kmp.weatherapp.theme.spacing_13x
 import com.jpmobilelab.kmp.weatherapp.theme.spacing_1x
 import com.jpmobilelab.kmp.weatherapp.theme.spacing_2x
+import com.jpmobilelab.kmp.weatherapp.theme.spacing_3x
+import com.jpmobilelab.kmp.weatherapp.theme.spacing_8x
 import com.jpmobilelab.kmp.weatherapp.theme.verticalGradient
 import com.jpmobilelab.kmp.weatherapp.theme.verticalGradientStartingColor
 import com.jpmobilelab.kmp.weatherapp.theme.weatherIconsSizeLarge
@@ -82,11 +84,11 @@ fun WeatherScreen(weather: Weather?) {
                     orientation = Orientation.Vertical
                 ),
             verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.Start
         ) {
             WeatherMainProperties(weather)
 
-            Spacer(Modifier.height(spacing_13x))
+            Spacer(Modifier.height(spacing_8x))
 
             WeatherProperties(weather)
         }
@@ -100,37 +102,66 @@ private fun WeatherMainProperties(weather: Weather?) = weather?.current?.let {
         style = MaterialTheme.typography.headlineLarge,
         color = MaterialTheme.colorScheme.onSurface
     )
-    Text(
-        text = weather.current.weatherDescription,
-        style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.onSurface
-    )
-    Image(
-        painter = painterResource(weather.current.getDrawableResource()),
-        contentDescription = null,
-        modifier = Modifier.size(weatherIconsSizeLarge)
-    )
-    Row {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = spacing_1x),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Text(
-            text = weather.current.temperature2m.toString(),
-            style = MaterialTheme.typography.displayLarge,
+            modifier = Modifier
+                .padding(end = spacing_1x)
+                .weight(0.6f),
+            text = weather.current.weatherDescription,
+            style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onSurface
         )
-        Text(
-            modifier = Modifier.padding(
-                start = spacing_0_5x,
-                top = spacing_1x
-            ),
-            text = "°C",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface
+        Column(
+            modifier = Modifier
+                .weight(0.4f),
+            horizontalAlignment = Alignment.End
+        ) {
+            Text(
+                text = "${stringResource(Res.string.last_update)}:",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                text = weather.current.getDate(),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
+    }
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Row(modifier = Modifier.padding(start = spacing_3x)) {
+            Text(
+                text = weather.current.temperature2m.toString(),
+                style = MaterialTheme.typography.displayLarge,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                modifier = Modifier.padding(
+                    start = spacing_0_5x,
+                    top = spacing_1x
+                ),
+                text = "°C",
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
+        Image(
+            alignment = Alignment.CenterEnd,
+            painter = painterResource(weather.current.getDrawableResource()),
+            contentDescription = weather.current.weatherDescription,
+            modifier = Modifier.size(weatherIconsSizeLarge)
         )
     }
-    Text(
-        text = "Last update : ${weather.current.getDate()}",
-        style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.onSurface
-    )
 }
 
 @Composable

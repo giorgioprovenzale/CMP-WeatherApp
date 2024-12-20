@@ -18,4 +18,5 @@
     <string name="humidity">humidity</string>
     <string name="feels_like">feels like</string>">
     <string name="wind">wind</string>
+    <string name="last_update">Last update</string>
 </resources>
