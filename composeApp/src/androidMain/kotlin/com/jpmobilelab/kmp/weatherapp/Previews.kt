@@ -20,6 +20,7 @@ import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
 import com.jpmobilelab.kmp.weatherapp.ui.composables.TransparentBox
 import com.jpmobilelab.kmp.weatherapp.ui.weather.WeatherScreen
+import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
@@ -43,6 +44,7 @@ fun createMockWeather() = Weather(
 )
 
 private fun createMockCurrentWeather() = CurrentWeather(
+    time = LocalDateTime.parse("2024-12-20T15:45"),
     temperature2m = 22.5f,
     apparentTemperature = 23.0f,
     isDay = true,

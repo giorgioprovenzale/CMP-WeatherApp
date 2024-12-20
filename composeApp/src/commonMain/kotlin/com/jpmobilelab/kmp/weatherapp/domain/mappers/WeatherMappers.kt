@@ -59,6 +59,7 @@ import com.jpmobilelab.kmp.weatherapp.data.dto.CurrentWeatherDto
 import com.jpmobilelab.kmp.weatherapp.data.dto.WeatherDto
 import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
+import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.DrawableResource
 
 fun WeatherDto.toWeather(): Weather = Weather(
@@ -70,6 +71,7 @@ fun WeatherDto.toWeather(): Weather = Weather(
 )
 
 fun CurrentWeatherDto.toCurrentWeather(): CurrentWeather = CurrentWeather(
+    time = LocalDateTime.parse(time),
     temperature2m = temperature2m,
     apparentTemperature = apparentTemperature,
     isDay = isDay.toString().toBoolean(),

@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CurrentWeatherDto(
+    @SerialName("time") val time: String,
     @SerialName("temperature_2m") val temperature2m: Float,
     @SerialName("apparent_temperature") val apparentTemperature: Float,
     @SerialName("is_day") val isDay: Int,

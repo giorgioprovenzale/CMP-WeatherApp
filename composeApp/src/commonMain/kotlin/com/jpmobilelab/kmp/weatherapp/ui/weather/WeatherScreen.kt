@@ -126,6 +126,11 @@ private fun WeatherMainProperties(weather: Weather?) = weather?.current?.let {
             color = MaterialTheme.colorScheme.onSurface
         )
     }
+    Text(
+        text = "Last update : ${weather.current.getDate()}",
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.onSurface
+    )
 }
 
 @Composable
