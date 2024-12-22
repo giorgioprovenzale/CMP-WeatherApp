@@ -67,6 +67,7 @@ kotlin {
 
             implementation(libs.bundles.ktor)
             implementation(libs.bundles.coil)
+            implementation(libs.bundles.compass)
         }
         nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
