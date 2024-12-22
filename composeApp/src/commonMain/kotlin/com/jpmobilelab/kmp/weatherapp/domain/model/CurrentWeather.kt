@@ -11,6 +11,7 @@ data class CurrentWeather(
     val weatherCode: Int,
     val relativeHumidity2m: Float,
     val windSpeed10m: Float,
+    val precipitationProbability: Int,
     val weatherDescription: String,
     val dayDrawableResource: DrawableResource,
     val nightDrawableResource: DrawableResource

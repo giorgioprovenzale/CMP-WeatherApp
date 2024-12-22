@@ -101,6 +101,7 @@ private fun createMockCurrentWeather() = CurrentWeather(
     weatherCode = 2,
     relativeHumidity2m = 50.0f,
     windSpeed10m = 10.0f,
+    precipitationProbability = 8,
     weatherDescription = "Light Thunderstorms With Hail",
     dayDrawableResource = Res.drawable.ic_0_clear_day,
     nightDrawableResource = Res.drawable.ic_0_clear_night,

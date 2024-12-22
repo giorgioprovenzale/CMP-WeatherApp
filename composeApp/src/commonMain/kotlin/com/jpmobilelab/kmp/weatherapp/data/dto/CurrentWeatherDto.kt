@@ -12,4 +12,5 @@ data class CurrentWeatherDto(
     @SerialName("weather_code") val weatherCode: Int,
     @SerialName("relative_humidity_2m") val relativeHumidity2m: Float,
     @SerialName("wind_speed_10m") val windSpeed10m: Float,
+    @SerialName("precipitation_probability") val precipitationProbability: Int
 )

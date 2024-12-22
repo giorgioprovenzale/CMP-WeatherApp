@@ -78,6 +78,7 @@ fun CurrentWeatherDto.toCurrentWeather(): CurrentWeather = CurrentWeather(
     weatherCode = weatherCode,
     relativeHumidity2m = relativeHumidity2m,
     windSpeed10m = windSpeed10m,
+    precipitationProbability = precipitationProbability,
     weatherDescription = getWeatherDescription(
         weatherCode, isDay.toString().toBoolean()
     ),
