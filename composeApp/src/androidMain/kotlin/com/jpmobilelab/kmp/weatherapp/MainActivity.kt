@@ -19,7 +19,6 @@ class MainActivity : ComponentActivity() {
                 Color.TRANSPARENT, Color.TRANSPARENT
             )
         )
-
         setContent {
             App()
         }

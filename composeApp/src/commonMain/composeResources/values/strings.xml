@@ -19,4 +19,32 @@
     <string name="feels_like">feels like</string>">
     <string name="wind">wind</string>
     <string name="last_update">Last update</string>
+    <string name="current_location">Current Location</string>
+    <string name="error_location_not_found">Error while getting location</string>
+    <string name="error_location_service_not_supported">Location service not supported or disabled.
+        Please enable your GPS and click on the following button to retrieve your location.</string>
+    <string name="error_location_permission_denied">Please, allow the permission to retrieve location</string>
+    <string name="error_location_permission_denied_forever">Please, allow the permission on system settings to retrieve location</string>
+    <string name="get_location">Get location</string>">
+    <string name="just_now">just now</string>
+    <plurals name="difference_in_minutes">
+        <item quantity="one">%1$d minute ago</item>
+        <item quantity="other">%1$d minutes ago</item>
+    </plurals>
+    <plurals name="difference_in_hours">
+        <item quantity="one">%1$d hour ago</item>
+        <item quantity="other">%1$d hours ago</item>
+    </plurals>
+    <plurals name="difference_in_days">
+        <item quantity="one">%1$d day ago</item>
+        <item quantity="other">%1$d days ago</item>
+    </plurals>
+    <plurals name="difference_in_weeks">
+        <item quantity="one">%1$d week ago</item>
+        <item quantity="other">%1$d weeks ago</item>
+    </plurals>
+    <plurals name="difference_in_months">
+        <item quantity="one">%1$d month ago</item>
+        <item quantity="other">%1$d months ago</item>
+    </plurals>
 </resources>

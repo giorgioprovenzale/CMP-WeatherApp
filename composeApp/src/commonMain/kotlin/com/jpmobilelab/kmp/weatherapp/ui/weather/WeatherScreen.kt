@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cmp_weatherapp.composeapp.generated.resources.Res
 import cmp_weatherapp.composeapp.generated.resources.feels_like
+import cmp_weatherapp.composeapp.generated.resources.get_location
 import cmp_weatherapp.composeapp.generated.resources.humidity
 import cmp_weatherapp.composeapp.generated.resources.ic_feels_like
 import cmp_weatherapp.composeapp.generated.resources.ic_humidity
@@ -44,6 +46,7 @@ import com.jpmobilelab.kmp.weatherapp.theme.verticalGradient
 import com.jpmobilelab.kmp.weatherapp.theme.verticalGradientStartingColor
 import com.jpmobilelab.kmp.weatherapp.theme.weatherIconsSizeLarge
 import com.jpmobilelab.kmp.weatherapp.ui.composables.WeatherValueWithLabelAndIcon
+import com.jpmobilelab.kmp.weatherapp.ui.formatTimeDifference
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -56,12 +59,13 @@ fun WeatherScreenRoot(
 
     WeatherScreen(
         state = state,
+        onGetLocationClick = viewModel::getLocation
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WeatherScreen(state: WeatherState) {
+fun WeatherScreen(state: WeatherState, onGetLocationClick: () -> Unit) {
 
     Scaffold(
         topBar = {
@@ -92,12 +96,41 @@ fun WeatherScreen(state: WeatherState) {
 
                 is WeatherState.Content -> {
                     Text(
-                        text = state.location,
+                        text = state.location.asString(),
                         style = MaterialTheme.typography.headlineLarge,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     WeatherContent(state.weather)
                 }
+
+                is WeatherState.Error -> {
+                    WeatherError(state, onGetLocationClick)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun WeatherError(state: WeatherState.Error, onGetLocationClick: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxWidth().padding(top = spacing_2x),
+        horizontalAlignment = Alignment.CenterHorizontally
+    )
+    {
+        Text(
+            text = state.message.asString(),
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        if (state.showButton) {
+            Button(
+                modifier = Modifier.padding(top = spacing_2x),
+                onClick = onGetLocationClick
+            ) {
+                Text(
+                    text = stringResource(Res.string.get_location),
+                )
             }
         }
     }
@@ -155,7 +188,7 @@ private fun WeatherMainProperties(weather: Weather?) = weather?.current?.let {
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = weather.current.getDate(),
+                text = formatTimeDifference(weather.current.time),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -207,7 +240,7 @@ private fun WeatherProperties(weather: Weather?) = weather?.current?.let {
         WeatherValueWithLabelAndIcon(
             icon = Res.drawable.ic_wind,
             label = stringResource(Res.string.wind),
-            subLabel = "${weather.current.windSpeed10m.toInt()}Km/h",
+            subLabel = "${weather.current.windSpeed10m.toInt()} Km/h",
         )
         WeatherValueWithLabelAndIcon(
             icon = Res.drawable.ic_feels_like,

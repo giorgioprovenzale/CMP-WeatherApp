@@ -13,12 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import cmp_weatherapp.composeapp.generated.resources.Res
+import cmp_weatherapp.composeapp.generated.resources.current_location
+import cmp_weatherapp.composeapp.generated.resources.error_location_permission_denied
+import cmp_weatherapp.composeapp.generated.resources.error_location_permission_denied_forever
 import cmp_weatherapp.composeapp.generated.resources.ic_0_clear_day
 import cmp_weatherapp.composeapp.generated.resources.ic_0_clear_night
 import cmp_weatherapp.composeapp.generated.resources.moderate_or_heavy_rain_shower
 import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
 import com.jpmobilelab.kmp.weatherapp.ui.composables.TransparentBox
+import com.jpmobilelab.kmp.weatherapp.ui.core.UiText
 import com.jpmobilelab.kmp.weatherapp.ui.weather.WeatherScreen
 import com.jpmobilelab.kmp.weatherapp.ui.weather.WeatherState
 import kotlinx.datetime.LocalDateTime
@@ -30,7 +34,10 @@ import org.jetbrains.compose.resources.painterResource
 fun WeatherScreenPreview() {
     MaterialTheme {
         WeatherScreen(
-            WeatherState.Content("Current Location", createMockWeather())
+            state = WeatherState.Content(
+                location = UiText.StringResourceId(Res.string.current_location), weather = createMockWeather()
+            ),
+            onGetLocationClick = {}
         )
     }
 }
@@ -41,7 +48,38 @@ fun WeatherScreenPreview() {
 fun WeatherScreenLoadingPreview() {
     MaterialTheme {
         WeatherScreen(
-            WeatherState.Loading
+            state = WeatherState.Loading,
+            onGetLocationClick = {}
+        )
+    }
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+fun WeatherScreenErrorPreview() {
+    MaterialTheme {
+        WeatherScreen(
+            state = WeatherState.Error(
+                message = UiText.StringResourceId(Res.string.error_location_permission_denied_forever),
+                showButton = false
+            ),
+            onGetLocationClick = {}
+        )
+    }
+}
+
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+fun WeatherScreenErrorWithButtonPreview() {
+    MaterialTheme {
+        WeatherScreen(
+            state = WeatherState.Error(
+                message = UiText.StringResourceId(Res.string.error_location_permission_denied),
+                showButton = true,
+            ),
+            onGetLocationClick = {}
         )
     }
 }
