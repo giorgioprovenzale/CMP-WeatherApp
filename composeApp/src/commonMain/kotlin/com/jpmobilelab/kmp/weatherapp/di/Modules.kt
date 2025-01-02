@@ -5,6 +5,7 @@ import com.jpmobilelab.kmp.weatherapp.data.remote.KtorRemoteWeatherDataSource
 import com.jpmobilelab.kmp.weatherapp.data.remote.RemoteWeatherDataSource
 import com.jpmobilelab.kmp.weatherapp.domain.repository.DefaultWeatherRepository
 import com.jpmobilelab.kmp.weatherapp.domain.repository.WeatherRepository
+import com.jpmobilelab.kmp.weatherapp.ui.search.SearchViewModel
 import com.jpmobilelab.kmp.weatherapp.ui.weather.WeatherViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
@@ -21,4 +22,5 @@ val sharedModule = module {
     singleOf(::DefaultWeatherRepository).bind<WeatherRepository>()
 
     viewModelOf(::WeatherViewModel)
+    viewModelOf(::SearchViewModel)
 }
