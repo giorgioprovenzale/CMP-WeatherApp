@@ -39,7 +39,9 @@ fun App() {
                 }
 
                 composable<Route.SearchRoute> {
-                    SearchScreenRoot()
+                    SearchScreenRoot(
+                        onBackClick = navController::popBackStack
+                    )
                 }
             }
         }

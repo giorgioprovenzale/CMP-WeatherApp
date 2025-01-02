@@ -18,16 +18,20 @@ import androidx.compose.ui.Modifier
 import com.jpmobilelab.kmp.weatherapp.theme.spacing_2x
 import com.jpmobilelab.kmp.weatherapp.theme.verticalGradient
 import com.jpmobilelab.kmp.weatherapp.theme.verticalGradientStartingColor
+import com.jpmobilelab.kmp.weatherapp.ui.composables.TopBarBackButton
 
 @Composable
 fun SearchScreenRoot(
+    onBackClick: () -> Unit = {}
 ) {
-    SearchScreen()
+    SearchScreen(onBackClick)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen() {
+fun SearchScreen(
+    onBackClick: () -> Unit = {}
+) {
 
     Scaffold(
         topBar = {
@@ -36,7 +40,10 @@ fun SearchScreen() {
                     containerColor = verticalGradientStartingColor,
                     titleContentColor = MaterialTheme.colorScheme.onSurface,
                 ),
-                title = { }
+                title = { },
+                navigationIcon = {
+                    TopBarBackButton(onBackClick)
+                }
             )
         },
     ) { innerPadding ->
