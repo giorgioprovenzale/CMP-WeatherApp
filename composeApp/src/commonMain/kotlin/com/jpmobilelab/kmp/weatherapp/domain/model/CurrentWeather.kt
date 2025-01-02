@@ -17,10 +17,4 @@ data class CurrentWeather(
     val nightDrawableResource: DrawableResource
 ) {
     fun getDrawableResource() = if (isDay) dayDrawableResource else nightDrawableResource
-
-    fun getDate() = "${time.dayOfMonth.toString().padStart(2, '0')}-" +
-        "${time.monthNumber.toString().padStart(2, '0')}-" +
-        "${time.year} " +
-        "${time.hour.toString().padStart(2, '0')}:" +
-        time.minute.toString().padStart(2, '0')
 }
