@@ -7,8 +7,8 @@ import cmp_weatherapp.composeapp.generated.resources.ic_1_mainly_clear_day
 import cmp_weatherapp.composeapp.generated.resources.ic_1_mainly_clear_night
 import cmp_weatherapp.composeapp.generated.resources.ic_2_partly_cloudy_day
 import cmp_weatherapp.composeapp.generated.resources.ic_2_partly_cloudy_night
-import cmp_weatherapp.composeapp.generated.resources.ic_3_overcast_day
-import cmp_weatherapp.composeapp.generated.resources.ic_3_overcast_night
+import cmp_weatherapp.composeapp.generated.resources.ic_3_cloudy_day
+import cmp_weatherapp.composeapp.generated.resources.ic_3_cloudy_night
 import cmp_weatherapp.composeapp.generated.resources.ic_45_fog_day
 import cmp_weatherapp.composeapp.generated.resources.ic_45_fog_night
 import cmp_weatherapp.composeapp.generated.resources.ic_48_freezing_fog_day
@@ -74,13 +74,13 @@ fun CurrentWeatherDto.toCurrentWeather(): CurrentWeather = CurrentWeather(
     time = LocalDateTime.parse(time),
     temperature2m = temperature2m,
     apparentTemperature = apparentTemperature,
-    isDay = isDay.toString().toBoolean(),
+    isDay = isDay.toBoolean(),
     weatherCode = weatherCode,
     relativeHumidity2m = relativeHumidity2m,
     windSpeed10m = windSpeed10m,
     precipitationProbability = precipitationProbability,
     weatherDescription = getWeatherDescription(
-        weatherCode, isDay.toString().toBoolean()
+        weatherCode, isDay.toBoolean()
     ),
     dayDrawableResource = getDrawableResource(
         weatherCode, true
@@ -88,12 +88,14 @@ fun CurrentWeatherDto.toCurrentWeather(): CurrentWeather = CurrentWeather(
     nightDrawableResource = getDrawableResource(weatherCode, false)
 )
 
+private fun Int.toBoolean(): Boolean = this == 1
+
 private fun getDrawableResource(code: Int, isDay: Boolean): DrawableResource {
     return when (code) {
         0 -> if (isDay) Res.drawable.ic_0_clear_day else Res.drawable.ic_0_clear_night
         1 -> if (isDay) Res.drawable.ic_1_mainly_clear_day else Res.drawable.ic_1_mainly_clear_night
         2 -> if (isDay) Res.drawable.ic_2_partly_cloudy_day else Res.drawable.ic_2_partly_cloudy_night
-        3 -> if (isDay) Res.drawable.ic_3_overcast_day else Res.drawable.ic_3_overcast_night
+        3 -> if (isDay) Res.drawable.ic_3_cloudy_day else Res.drawable.ic_3_cloudy_night
         45 -> if (isDay) Res.drawable.ic_45_fog_day else Res.drawable.ic_45_fog_night
         48 -> if (isDay) Res.drawable.ic_48_freezing_fog_day else Res.drawable.ic_48_freezing_fog_night
         51 -> if (isDay) Res.drawable.ic_51_light_drizzle_day else Res.drawable.ic_51_light_drizzle_night
