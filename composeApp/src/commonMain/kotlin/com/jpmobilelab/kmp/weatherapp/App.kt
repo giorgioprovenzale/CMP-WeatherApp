@@ -9,6 +9,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.jpmobilelab.kmp.weatherapp.theme.DarkColorPalette
 import com.jpmobilelab.kmp.weatherapp.theme.LightColorPalette
+import com.jpmobilelab.kmp.weatherapp.ui.search.SearchScreenRoot
 import com.jpmobilelab.kmp.weatherapp.ui.weather.WeatherScreenRoot
 import com.jpmobilelab.kmp.weatherapp.ui.weather.WeatherViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -32,7 +33,13 @@ fun App() {
                 composable<Route.WeatherHome> {
                     val viewModel = koinViewModel<WeatherViewModel>()
 
-                    WeatherScreenRoot(viewModel)
+                    WeatherScreenRoot(
+                        viewModel = viewModel,
+                        onSearchClick = { navController.navigate(Route.SearchRoute) })
+                }
+
+                composable<Route.SearchRoute> {
+                    SearchScreenRoot()
                 }
             }
         }

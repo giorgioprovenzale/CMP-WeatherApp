@@ -14,9 +14,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -54,18 +58,24 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun WeatherScreenRoot(
     viewModel: WeatherViewModel = koinViewModel(),
+    onSearchClick: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     WeatherScreen(
         state = state,
-        onGetLocationClick = viewModel::getLocation
+        onGetLocationClick = viewModel::getLocation,
+        onSearchClick
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WeatherScreen(state: WeatherState, onGetLocationClick: () -> Unit) {
+fun WeatherScreen(
+    state: WeatherState,
+    onGetLocationClick: () -> Unit,
+    onSearchClick: () -> Unit
+) {
 
     Scaffold(
         topBar = {
@@ -74,7 +84,12 @@ fun WeatherScreen(state: WeatherState, onGetLocationClick: () -> Unit) {
                     containerColor = verticalGradientStartingColor,
                     titleContentColor = MaterialTheme.colorScheme.onSurface,
                 ),
-                title = { }
+                title = { },
+                actions = {
+                    IconButton(onClick = onSearchClick) {
+                        Icon(Icons.Filled.Search, contentDescription = "Search")
+                    }
+                }
             )
         },
     ) { innerPadding ->

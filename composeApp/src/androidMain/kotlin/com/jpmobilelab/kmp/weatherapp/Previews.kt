@@ -37,7 +37,8 @@ fun WeatherScreenPreview() {
             state = WeatherState.Content(
                 location = UiText.StringResourceId(Res.string.current_location), weather = createMockWeather()
             ),
-            onGetLocationClick = {}
+            onGetLocationClick = {},
+            onSearchClick = {}
         )
     }
 }
@@ -49,7 +50,8 @@ fun WeatherScreenLoadingPreview() {
     MaterialTheme {
         WeatherScreen(
             state = WeatherState.Loading,
-            onGetLocationClick = {}
+            onGetLocationClick = {},
+            onSearchClick = {}
         )
     }
 }
@@ -64,7 +66,8 @@ fun WeatherScreenErrorPreview() {
                 message = UiText.StringResourceId(Res.string.error_location_permission_denied_forever),
                 showButton = false
             ),
-            onGetLocationClick = {}
+            onGetLocationClick = {},
+            onSearchClick = {}
         )
     }
 }
@@ -79,7 +82,8 @@ fun WeatherScreenErrorWithButtonPreview() {
                 message = UiText.StringResourceId(Res.string.error_location_permission_denied),
                 showButton = true,
             ),
-            onGetLocationClick = {}
+            onGetLocationClick = {},
+            onSearchClick = {}
         )
     }
 }

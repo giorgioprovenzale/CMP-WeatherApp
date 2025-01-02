@@ -9,4 +9,7 @@ sealed interface Route {
 
     @Serializable
     data object WeatherHome : Route
+
+    @Serializable
+    data object SearchRoute : Route
 }
