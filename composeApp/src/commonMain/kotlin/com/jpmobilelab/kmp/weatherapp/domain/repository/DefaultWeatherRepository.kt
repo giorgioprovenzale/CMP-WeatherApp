@@ -1,6 +1,6 @@
 package com.jpmobilelab.kmp.weatherapp.domain.repository
 
-import com.jpmobilelab.kmp.weatherapp.data.remote.RemoteWeatherDataSource
+import com.jpmobilelab.kmp.weatherapp.data.remote.weather.RemoteWeatherDataSource
 import com.jpmobilelab.kmp.weatherapp.domain.core.DataError
 import com.jpmobilelab.kmp.weatherapp.domain.core.Result
 import com.jpmobilelab.kmp.weatherapp.domain.core.map

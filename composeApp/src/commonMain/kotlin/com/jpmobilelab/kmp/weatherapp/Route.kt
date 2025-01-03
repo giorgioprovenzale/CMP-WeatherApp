@@ -8,7 +8,11 @@ sealed interface Route {
     data object WeatherGraph : Route
 
     @Serializable
-    data object WeatherHome : Route
+    data class WeatherHome(
+        val latitude: Float? = null,
+        val longitude: Float? = null,
+        val name: String? = null
+    ) : Route
 
     @Serializable
     data object SearchRoute : Route

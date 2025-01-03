@@ -1,5 +1,6 @@
-package com.jpmobilelab.kmp.weatherapp.data.remote
+package com.jpmobilelab.kmp.weatherapp.data.remote.weather
 
+import BASE_PATH
 import com.jpmobilelab.kmp.weatherapp.data.core.safeCall
 import com.jpmobilelab.kmp.weatherapp.data.dto.WeatherDto
 import com.jpmobilelab.kmp.weatherapp.domain.core.DataError
@@ -7,8 +8,6 @@ import com.jpmobilelab.kmp.weatherapp.domain.core.Result
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
-
-private const val BASE_URL = "https://api.open-meteo.com/v1"
 
 class KtorRemoteWeatherDataSource(
     private val httpClient: HttpClient
@@ -20,7 +19,7 @@ class KtorRemoteWeatherDataSource(
     ): Result<WeatherDto, DataError.Remote> {
         return safeCall<WeatherDto> {
             httpClient.get(
-                urlString = "$BASE_URL/forecast"
+                urlString = "https://$BASE_PATH/forecast"
             ) {
                 parameter("latitude", latitude)
                 parameter("longitude", longitude)

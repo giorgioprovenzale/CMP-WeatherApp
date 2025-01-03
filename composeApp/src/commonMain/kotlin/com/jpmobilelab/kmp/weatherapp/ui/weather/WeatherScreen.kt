@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,6 +51,7 @@ import com.jpmobilelab.kmp.weatherapp.theme.verticalGradient
 import com.jpmobilelab.kmp.weatherapp.theme.verticalGradientStartingColor
 import com.jpmobilelab.kmp.weatherapp.theme.weatherIconsSizeLarge
 import com.jpmobilelab.kmp.weatherapp.ui.composables.WeatherValueWithLabelAndIcon
+import com.jpmobilelab.kmp.weatherapp.ui.core.UiText
 import com.jpmobilelab.kmp.weatherapp.ui.formatTimeDifference
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -58,9 +60,20 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun WeatherScreenRoot(
     viewModel: WeatherViewModel = koinViewModel(),
-    onSearchClick: () -> Unit
+    onSearchClick: () -> Unit,
+    placeParams: PlaceParams? = null,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(placeParams) {
+        if (placeParams != null) {
+            viewModel.fetchWeather(
+                latitude = placeParams.latitude,
+                longitude = placeParams.longitude,
+                locationName = UiText.DynamicString(placeParams.name)
+            )
+        } else viewModel.getLocation()
+    }
 
     WeatherScreen(
         state = state,

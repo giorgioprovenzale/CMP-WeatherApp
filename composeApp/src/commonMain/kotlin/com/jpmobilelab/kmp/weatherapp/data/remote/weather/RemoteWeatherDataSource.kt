@@ -1,4 +1,4 @@
-package com.jpmobilelab.kmp.weatherapp.data.remote
+package com.jpmobilelab.kmp.weatherapp.data.remote.weather
 
 import com.jpmobilelab.kmp.weatherapp.data.dto.WeatherDto
 import com.jpmobilelab.kmp.weatherapp.domain.core.DataError

@@ -1,9 +1,13 @@
 package com.jpmobilelab.kmp.weatherapp.di
 
 import com.jpmobilelab.kmp.weatherapp.data.core.HttpClientFactory
-import com.jpmobilelab.kmp.weatherapp.data.remote.KtorRemoteWeatherDataSource
-import com.jpmobilelab.kmp.weatherapp.data.remote.RemoteWeatherDataSource
+import com.jpmobilelab.kmp.weatherapp.data.remote.search.KtorRemoteSearchDataSource
+import com.jpmobilelab.kmp.weatherapp.data.remote.search.RemoteSearchDataSource
+import com.jpmobilelab.kmp.weatherapp.data.remote.weather.KtorRemoteWeatherDataSource
+import com.jpmobilelab.kmp.weatherapp.data.remote.weather.RemoteWeatherDataSource
+import com.jpmobilelab.kmp.weatherapp.domain.repository.DefaultLocationRepository
 import com.jpmobilelab.kmp.weatherapp.domain.repository.DefaultWeatherRepository
+import com.jpmobilelab.kmp.weatherapp.domain.repository.LocationRepository
 import com.jpmobilelab.kmp.weatherapp.domain.repository.WeatherRepository
 import com.jpmobilelab.kmp.weatherapp.ui.search.SearchViewModel
 import com.jpmobilelab.kmp.weatherapp.ui.weather.WeatherViewModel
@@ -19,7 +23,10 @@ val sharedModule = module {
     single { HttpClientFactory.create(get()) }
 
     singleOf(::KtorRemoteWeatherDataSource).bind<RemoteWeatherDataSource>()
+    singleOf(::KtorRemoteSearchDataSource).bind<RemoteSearchDataSource>()
+
     singleOf(::DefaultWeatherRepository).bind<WeatherRepository>()
+    singleOf(::DefaultLocationRepository).bind<LocationRepository>()
 
     viewModelOf(::WeatherViewModel)
     viewModelOf(::SearchViewModel)

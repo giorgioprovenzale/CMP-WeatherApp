@@ -4,6 +4,8 @@ package com.jpmobilelab.kmp.weatherapp.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jpmobilelab.kmp.weatherapp.domain.core.onSuccess
+import com.jpmobilelab.kmp.weatherapp.domain.repository.LocationRepository
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,9 +17,11 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
+    private val locationRepository: LocationRepository
 ) : ViewModel() {
 
     private var searchJob: Job? = null
@@ -36,9 +40,16 @@ class SearchViewModel(
     fun onAction(action: SearchScreenAction) {
         when (action) {
             is SearchScreenAction.OnSearchQueryChange -> {
-                _state.value = _state.value.copy(
-                    searchQuery = action.query
-                )
+                _state.update {
+                    it.copy(
+                        searchQuery = action.query,
+                        searchResults = emptyList()
+                    )
+                }
+            }
+
+            is SearchScreenAction.OnLocationClick -> {
+                println(action.location.toString())
             }
         }
     }
@@ -64,6 +75,11 @@ class SearchViewModel(
     }
 
     private fun searchLocations(query: String) = viewModelScope.launch {
-        println("Search for $query")
+        locationRepository.searchLocation(query)
+            .onSuccess { results ->
+                _state.update {
+                    it.copy(searchResults = results)
+                }
+            }
     }
 }

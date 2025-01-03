@@ -18,7 +18,6 @@ import dev.jordond.compass.geolocation.GeolocatorResult
 import dev.jordond.compass.geolocation.mobile
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -29,16 +28,13 @@ class WeatherViewModel(
 
     private val _state = MutableStateFlow<WeatherState>(WeatherState.Loading)
     val state = _state
-        .onStart {
-            getLocation()
-        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5000L),
             initialValue = _state.value
         )
 
-    private suspend fun fetchWeather(latitude: Float, longitude: Float, locationName: UiText) {
+    suspend fun fetchWeather(latitude: Float, longitude: Float, locationName: UiText) {
         _state.update { WeatherState.Loading }
         weatherRepository.getCurrentWeatherData(latitude, longitude)
             .onSuccess { weather ->
@@ -59,12 +55,12 @@ class WeatherViewModel(
             when (val result: GeolocatorResult = geolocator.current()) {
                 is GeolocatorResult.Success -> {
                     val geocoder = Geocoder()
-                    val location = geocoder.placeOrNull(result.data.coordinates)
+                    val place = geocoder.placeOrNull(result.data.coordinates)
                     fetchWeather(
                         latitude = result.data.coordinates.latitude.toFloat(),
                         longitude = result.data.coordinates.longitude.toFloat(),
-                        locationName = if (location?.locality != null)
-                            UiText.DynamicString(location.locality.orEmpty())
+                        locationName = if (place?.locality != null)
+                            UiText.DynamicString(place.locality.orEmpty())
                         else
                             UiText.StringResourceId(
                                 Res.string.current_location
