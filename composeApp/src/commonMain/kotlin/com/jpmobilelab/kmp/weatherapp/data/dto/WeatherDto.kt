@@ -10,5 +10,6 @@ data class WeatherDto(
     @SerialName("timezone") val timezone: String,
     @SerialName("timezone_abbreviation") val timezoneAbbreviation: String,
     @SerialName("elevation") val elevation: Float,
-    @SerialName("current") val current: CurrentWeatherDto? = null
+    @SerialName("current") val current: CurrentWeatherDto,
+    @SerialName("hourly") val hourly: HourlyWeatherDto? = null,
 )

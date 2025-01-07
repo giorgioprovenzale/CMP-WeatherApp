@@ -56,8 +56,10 @@ import cmp_weatherapp.composeapp.generated.resources.ic_96_thunderstorm_with_sli
 import cmp_weatherapp.composeapp.generated.resources.ic_99_thunderstorm_with_heavy_hail_day
 import cmp_weatherapp.composeapp.generated.resources.ic_99_thunderstorm_with_heavy_hail_night
 import com.jpmobilelab.kmp.weatherapp.data.dto.CurrentWeatherDto
+import com.jpmobilelab.kmp.weatherapp.data.dto.HourlyWeatherDto
 import com.jpmobilelab.kmp.weatherapp.data.dto.WeatherDto
 import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentWeather
+import com.jpmobilelab.kmp.weatherapp.domain.model.HourlyWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
 import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.DrawableResource
@@ -68,6 +70,8 @@ fun WeatherDto.toWeather(): Weather = Weather(
     timezone = timezone,
     timezoneAbbreviation = timezoneAbbreviation,
     elevation = elevation,
+    current = current.toCurrentWeather(),
+    hourly = hourly?.toHourlyWeathersList().orEmpty()
 )
 
 fun CurrentWeatherDto.toCurrentWeather(): CurrentWeather = CurrentWeather(
@@ -87,6 +91,26 @@ fun CurrentWeatherDto.toCurrentWeather(): CurrentWeather = CurrentWeather(
     ),
     nightDrawableResource = getDrawableResource(weatherCode, false)
 )
+
+fun HourlyWeatherDto.toHourlyWeathersList(): List<HourlyWeather> {
+    return time.mapIndexed { index, time ->
+        HourlyWeather(
+            time = LocalDateTime.parse(time),
+            temperature2m = temperature2m[index],
+            isDay = isDay[index].toBoolean(),
+            weatherCode = weatherCode[index],
+            windSpeed10m = windSpeed10m[index],
+            precipitationProbability = precipitationProbability[index],
+            weatherDescription = getWeatherDescription(
+                weatherCode[index], isDay[index].toBoolean()
+            ),
+            dayDrawableResource = getDrawableResource(
+                weatherCode[index], true
+            ),
+            nightDrawableResource = getDrawableResource(weatherCode[index], false)
+        )
+    }
+}
 
 private fun Int.toBoolean(): Boolean = this == 1
 

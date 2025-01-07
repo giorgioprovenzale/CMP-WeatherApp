@@ -28,6 +28,10 @@ class KtorRemoteWeatherDataSource(
                     "current",
                     "temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,wind_speed_10m,precipitation_probability"
                 )
+                parameter(
+                    "hourly",
+                    "temperature_2m,precipitation_probability,weather_code,wind_speed_10m,is_day"
+                )
             }
         }
     }

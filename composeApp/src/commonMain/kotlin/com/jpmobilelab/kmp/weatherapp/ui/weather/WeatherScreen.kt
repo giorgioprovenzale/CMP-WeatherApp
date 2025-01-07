@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -31,6 +32,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cmp_weatherapp.composeapp.generated.resources.Res
 import cmp_weatherapp.composeapp.generated.resources.feels_like
@@ -38,18 +40,23 @@ import cmp_weatherapp.composeapp.generated.resources.get_location
 import cmp_weatherapp.composeapp.generated.resources.humidity
 import cmp_weatherapp.composeapp.generated.resources.ic_feels_like
 import cmp_weatherapp.composeapp.generated.resources.ic_humidity
+import cmp_weatherapp.composeapp.generated.resources.ic_rain
 import cmp_weatherapp.composeapp.generated.resources.ic_wind
 import cmp_weatherapp.composeapp.generated.resources.last_update
 import cmp_weatherapp.composeapp.generated.resources.wind
+import com.jpmobilelab.kmp.weatherapp.domain.model.HourlyWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
 import com.jpmobilelab.kmp.weatherapp.theme.spacing_0_5x
 import com.jpmobilelab.kmp.weatherapp.theme.spacing_1x
 import com.jpmobilelab.kmp.weatherapp.theme.spacing_2x
 import com.jpmobilelab.kmp.weatherapp.theme.spacing_3x
-import com.jpmobilelab.kmp.weatherapp.theme.spacing_8x
+import com.jpmobilelab.kmp.weatherapp.theme.spacing_6x
 import com.jpmobilelab.kmp.weatherapp.theme.verticalGradient
 import com.jpmobilelab.kmp.weatherapp.theme.verticalGradientStartingColor
+import com.jpmobilelab.kmp.weatherapp.theme.weatherHourlyIconSize
+import com.jpmobilelab.kmp.weatherapp.theme.weatherHourlyIconSizeSmall
 import com.jpmobilelab.kmp.weatherapp.theme.weatherIconsSizeLarge
+import com.jpmobilelab.kmp.weatherapp.ui.composables.TransparentBox
 import com.jpmobilelab.kmp.weatherapp.ui.composables.WeatherValueWithLabelAndIcon
 import com.jpmobilelab.kmp.weatherapp.ui.core.UiText
 import com.jpmobilelab.kmp.weatherapp.ui.formatTimeDifference
@@ -182,9 +189,13 @@ private fun WeatherContent(weather: Weather) {
     Column {
         WeatherMainProperties(weather)
 
-        Spacer(Modifier.height(spacing_8x))
+        Spacer(Modifier.height(spacing_6x))
 
         WeatherProperties(weather)
+
+        Spacer(Modifier.height(spacing_6x))
+
+        HourlyWeather(weather.hourly)
     }
 }
 
@@ -276,5 +287,80 @@ private fun WeatherProperties(weather: Weather?) = weather?.current?.let {
             subLabel = "${weather.current.apparentTemperature.toInt()}°",
         )
     }
+}
+
+@Composable
+private fun HourlyWeather(hourlyWeather: List<HourlyWeather>) {
+    if (hourlyWeather.isEmpty()) return
+
+    TransparentBox(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        LazyRow {
+            items(hourlyWeather.size) {
+                Spacer(
+                    modifier = Modifier.padding(start = spacing_1x)
+                )
+                Column(
+                    modifier = Modifier.padding(end = spacing_2x),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "${hourlyWeather[it].time.hour.toString().padStart(2, '0')}:00",
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                    Image(
+                        painter = painterResource(hourlyWeather[it].getDrawableResource()),
+                        contentDescription = hourlyWeather[it].time.hour.toString()
+                    )
+                    Row(modifier = Modifier.padding(start = spacing_1x)) {
+                        Text(
+                            text = hourlyWeather[it].temperature2m.toString(),
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Text(
+                            modifier = Modifier.padding(
+                                start = spacing_0_5x,
+                                top = spacing_0_5x,
+                            ),
+                            text = "°C",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                    Row {
+                        Image(
+                            painter = painterResource(Res.drawable.ic_rain),
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+                            modifier = Modifier.size(weatherHourlyIconSize)
+                        )
+                        Text(
+                            modifier = Modifier.padding(top = spacing_0_5x),
+                            text = "${hourlyWeather[it].precipitationProbability}%",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                    Row(modifier = Modifier.padding(top = spacing_0_5x)) {
+                        Image(
+                            modifier = Modifier.size(weatherHourlyIconSizeSmall).padding(top = spacing_0_5x),
+                            painter = painterResource(Res.drawable.ic_wind),
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+                        )
+                        Text(
+                            text = "${hourlyWeather[it].windSpeed10m} Km/h",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
+
+            }
+        }
+    }
+
 }
 

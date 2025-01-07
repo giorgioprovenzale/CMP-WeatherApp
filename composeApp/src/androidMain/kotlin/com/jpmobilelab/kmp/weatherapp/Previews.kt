@@ -20,6 +20,7 @@ import cmp_weatherapp.composeapp.generated.resources.ic_0_clear_day
 import cmp_weatherapp.composeapp.generated.resources.ic_0_clear_night
 import cmp_weatherapp.composeapp.generated.resources.moderate_or_heavy_rain_shower
 import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentWeather
+import com.jpmobilelab.kmp.weatherapp.domain.model.HourlyWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
 import com.jpmobilelab.kmp.weatherapp.ui.composables.TransparentBox
 import com.jpmobilelab.kmp.weatherapp.ui.core.UiText
@@ -94,7 +95,8 @@ fun createMockWeather() = Weather(
     timezone = "Europe/Rome",
     timezoneAbbreviation = "CET",
     elevation = 122.0f,
-    current = createMockCurrentWeather()
+    current = createMockCurrentWeather(),
+    hourly = MutableList(10) { createMockHourlyWeather() }
 )
 
 private fun createMockCurrentWeather() = CurrentWeather(
@@ -104,6 +106,18 @@ private fun createMockCurrentWeather() = CurrentWeather(
     isDay = true,
     weatherCode = 2,
     relativeHumidity2m = 50.0f,
+    windSpeed10m = 10.0f,
+    precipitationProbability = 8,
+    weatherDescription = "Light Thunderstorms With Hail",
+    dayDrawableResource = Res.drawable.ic_0_clear_day,
+    nightDrawableResource = Res.drawable.ic_0_clear_night,
+)
+
+private fun createMockHourlyWeather() = HourlyWeather(
+    time = LocalDateTime.parse("2024-12-20T05:00"),
+    temperature2m = 22.5f,
+    isDay = false,
+    weatherCode = 2,
     windSpeed10m = 10.0f,
     precipitationProbability = 8,
     weatherDescription = "Light Thunderstorms With Hail",

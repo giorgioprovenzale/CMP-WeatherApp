@@ -6,5 +6,6 @@ data class Weather(
     val timezone: String,
     val timezoneAbbreviation: String,
     val elevation: Float,
-    val current: CurrentWeather? = null
+    val current: CurrentWeather,
+    val hourly: List<HourlyWeather> = emptyList()
 )

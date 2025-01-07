@@ -4,6 +4,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.ui.unit.dp
 
+val spacing_minus_0_5x = (-4).dp
 val spacing_0x = 0.dp
 val spacing_0_5x = 4.dp
 val spacing_1x = 8.dp
@@ -27,6 +28,8 @@ val weatherIconsSizeMedium = 80.dp
 val weatherIconsSizeSmall = 40.dp
 
 val weatherPropertyIconSize = 30.dp
+val weatherHourlyIconSize = 24.dp
+val weatherHourlyIconSizeSmall = 16.dp
 
 val LightColorPalette = lightColorScheme(
 )

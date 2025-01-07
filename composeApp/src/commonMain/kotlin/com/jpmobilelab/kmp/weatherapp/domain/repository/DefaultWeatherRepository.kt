@@ -4,7 +4,6 @@ import com.jpmobilelab.kmp.weatherapp.data.remote.weather.RemoteWeatherDataSourc
 import com.jpmobilelab.kmp.weatherapp.domain.core.DataError
 import com.jpmobilelab.kmp.weatherapp.domain.core.Result
 import com.jpmobilelab.kmp.weatherapp.domain.core.map
-import com.jpmobilelab.kmp.weatherapp.domain.mappers.toCurrentWeather
 import com.jpmobilelab.kmp.weatherapp.domain.mappers.toWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
 
@@ -18,7 +17,8 @@ class DefaultWeatherRepository(
             latitude = latitude,
             longitude = longitude
         ).map { weatherDto ->
-            weatherDto.toWeather().copy(current = weatherDto.current?.toCurrentWeather())
+            val weather = weatherDto.toWeather()
+            weather.copy(hourly = weather.hourly.filter { it.time > weather.current.time })
         }
     }
 
