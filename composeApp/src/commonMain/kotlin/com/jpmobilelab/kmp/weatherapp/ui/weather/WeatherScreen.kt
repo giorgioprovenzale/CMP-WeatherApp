@@ -60,6 +60,7 @@ import com.jpmobilelab.kmp.weatherapp.ui.composables.TransparentBox
 import com.jpmobilelab.kmp.weatherapp.ui.composables.WeatherValueWithLabelAndIcon
 import com.jpmobilelab.kmp.weatherapp.ui.core.UiText
 import com.jpmobilelab.kmp.weatherapp.ui.formatTimeDifference
+import kotlinx.datetime.TimeZone
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -227,7 +228,7 @@ private fun WeatherMainProperties(weather: Weather?) = weather?.current?.let {
                 color = MaterialTheme.colorScheme.onSurface
             )
             Text(
-                text = formatTimeDifference(weather.current.time),
+                text = formatTimeDifference(weather.current.time, TimeZone.of(weather.timezone)),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurface
             )

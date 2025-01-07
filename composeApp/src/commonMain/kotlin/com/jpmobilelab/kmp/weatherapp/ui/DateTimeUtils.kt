@@ -11,13 +11,14 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.pluralStringResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun formatTimeDifference(targetDateTime: LocalDateTime): String {
-    val targetInstant = targetDateTime.toInstant(TimeZone.currentSystemDefault())
-    val nowInstant = Clock.System.now()
+fun formatTimeDifference(targetDateTime: LocalDateTime, timeZone: TimeZone): String {
+    val targetInstant = targetDateTime.toInstant(timeZone)
+    val nowInstant = Clock.System.now().toLocalDateTime(timeZone).toInstant(timeZone)
 
     val duration = nowInstant - targetInstant
 
