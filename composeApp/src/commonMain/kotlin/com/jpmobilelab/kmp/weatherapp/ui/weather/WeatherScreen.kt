@@ -43,6 +43,7 @@ import cmp_weatherapp.composeapp.generated.resources.ic_humidity
 import cmp_weatherapp.composeapp.generated.resources.ic_rain
 import cmp_weatherapp.composeapp.generated.resources.ic_wind
 import cmp_weatherapp.composeapp.generated.resources.last_update
+import cmp_weatherapp.composeapp.generated.resources.next_24_hours
 import cmp_weatherapp.composeapp.generated.resources.wind
 import com.jpmobilelab.kmp.weatherapp.domain.model.HourlyWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
@@ -297,68 +298,79 @@ private fun HourlyWeather(hourlyWeather: List<HourlyWeather>) {
     TransparentBox(
         modifier = Modifier.fillMaxWidth()
     ) {
-        LazyRow {
-            items(hourlyWeather.size) {
-                Spacer(
-                    modifier = Modifier.padding(start = spacing_1x)
-                )
-                Column(
-                    modifier = Modifier.padding(end = spacing_2x),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = "${hourlyWeather[it].time.hour.toString().padStart(2, '0')}:00",
-                        style = MaterialTheme.typography.titleSmall
+        Column {
+            Text(
+                modifier = Modifier.padding(start = spacing_1x),
+                text = stringResource(Res.string.next_24_hours),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(
+                modifier = Modifier.height(spacing_1x)
+            )
+            LazyRow {
+                items(hourlyWeather.size) {
+                    Spacer(
+                        modifier = Modifier.padding(start = spacing_1x)
                     )
-                    Image(
-                        painter = painterResource(hourlyWeather[it].getDrawableResource()),
-                        contentDescription = hourlyWeather[it].time.hour.toString()
-                    )
-                    Row(modifier = Modifier.padding(start = spacing_1x)) {
+                    Column(
+                        modifier = Modifier.padding(end = spacing_2x),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Text(
-                            text = hourlyWeather[it].temperature2m.toString(),
-                            style = MaterialTheme.typography.titleLarge,
-                            color = MaterialTheme.colorScheme.onSurface
+                            text = "${hourlyWeather[it].time.hour.toString().padStart(2, '0')}:00",
+                            style = MaterialTheme.typography.titleSmall
                         )
-                        Text(
-                            modifier = Modifier.padding(
-                                start = spacing_0_5x,
-                                top = spacing_0_5x,
-                            ),
-                            text = "°C",
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    Row {
                         Image(
-                            painter = painterResource(Res.drawable.ic_rain),
-                            contentDescription = null,
-                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-                            modifier = Modifier.size(weatherHourlyIconSize)
+                            painter = painterResource(hourlyWeather[it].getDrawableResource()),
+                            contentDescription = hourlyWeather[it].time.hour.toString()
                         )
-                        Text(
-                            modifier = Modifier.padding(top = spacing_0_5x),
-                            text = "${hourlyWeather[it].precipitationProbability}%",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
+                        Row(modifier = Modifier.padding(start = spacing_1x)) {
+                            Text(
+                                text = hourlyWeather[it].temperature2m.toString(),
+                                style = MaterialTheme.typography.titleLarge,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                modifier = Modifier.padding(
+                                    start = spacing_0_5x,
+                                    top = spacing_0_5x,
+                                ),
+                                text = "°C",
+                                style = MaterialTheme.typography.labelLarge,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        Row {
+                            Image(
+                                painter = painterResource(Res.drawable.ic_rain),
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+                                modifier = Modifier.size(weatherHourlyIconSize)
+                            )
+                            Text(
+                                modifier = Modifier.padding(top = spacing_0_5x),
+                                text = "${hourlyWeather[it].precipitationProbability}%",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        Row(modifier = Modifier.padding(top = spacing_0_5x)) {
+                            Image(
+                                modifier = Modifier.size(weatherHourlyIconSizeSmall).padding(top = spacing_0_5x),
+                                painter = painterResource(Res.drawable.ic_wind),
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+                            )
+                            Text(
+                                text = "${hourlyWeather[it].windSpeed10m} Km/h",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
                     }
-                    Row(modifier = Modifier.padding(top = spacing_0_5x)) {
-                        Image(
-                            modifier = Modifier.size(weatherHourlyIconSizeSmall).padding(top = spacing_0_5x),
-                            painter = painterResource(Res.drawable.ic_wind),
-                            contentDescription = null,
-                            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-                        )
-                        Text(
-                            text = "${hourlyWeather[it].windSpeed10m} Km/h",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                }
 
+                }
             }
         }
     }

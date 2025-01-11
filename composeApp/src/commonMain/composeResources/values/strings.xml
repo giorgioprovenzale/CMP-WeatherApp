@@ -48,4 +48,5 @@
         <item quantity="other">%1$d months ago</item>
     </plurals>
     <string name="locations">Locations</string>
+    <string name="next_24_hours">Next 24 hours</string>
 </resources>

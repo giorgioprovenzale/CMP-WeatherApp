@@ -5,7 +5,9 @@ import com.jpmobilelab.kmp.weatherapp.domain.core.DataError
 import com.jpmobilelab.kmp.weatherapp.domain.core.Result
 import com.jpmobilelab.kmp.weatherapp.domain.core.map
 import com.jpmobilelab.kmp.weatherapp.domain.mappers.toWeather
+import com.jpmobilelab.kmp.weatherapp.domain.model.HourlyWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
+import kotlinx.datetime.LocalDateTime
 
 class DefaultWeatherRepository(
     private val remoteWeatherDataSource: RemoteWeatherDataSource,
@@ -18,8 +20,12 @@ class DefaultWeatherRepository(
             longitude = longitude
         ).map { weatherDto ->
             val weather = weatherDto.toWeather()
-            weather.copy(hourly = weather.hourly.filter { it.time > weather.current.time })
+            weather.copy(
+                hourly = weather.hourly.filterNext24Hours(weather.current.time)
+            )
         }
     }
+
+    private fun List<HourlyWeather>.filterNext24Hours(currentTime: LocalDateTime) = filter { it.time > currentTime }.take(24)
 
 }
