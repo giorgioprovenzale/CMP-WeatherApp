@@ -2,9 +2,8 @@ package com.jpmobilelab.kmp.weatherapp.ui.weather
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
@@ -35,16 +35,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cmp_weatherapp.composeapp.generated.resources.Res
+import cmp_weatherapp.composeapp.generated.resources.daily_weather
 import cmp_weatherapp.composeapp.generated.resources.feels_like
 import cmp_weatherapp.composeapp.generated.resources.get_location
+import cmp_weatherapp.composeapp.generated.resources.hourly_weather
 import cmp_weatherapp.composeapp.generated.resources.humidity
+import cmp_weatherapp.composeapp.generated.resources.ic_arrow_down
+import cmp_weatherapp.composeapp.generated.resources.ic_arrow_up
 import cmp_weatherapp.composeapp.generated.resources.ic_feels_like
 import cmp_weatherapp.composeapp.generated.resources.ic_humidity
 import cmp_weatherapp.composeapp.generated.resources.ic_rain
 import cmp_weatherapp.composeapp.generated.resources.ic_wind
 import cmp_weatherapp.composeapp.generated.resources.last_update
-import cmp_weatherapp.composeapp.generated.resources.next_24_hours
+import cmp_weatherapp.composeapp.generated.resources.max
+import cmp_weatherapp.composeapp.generated.resources.min
 import cmp_weatherapp.composeapp.generated.resources.wind
+import com.jpmobilelab.kmp.weatherapp.domain.model.DailyWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.HourlyWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
 import com.jpmobilelab.kmp.weatherapp.theme.spacing_0_5x
@@ -61,6 +67,7 @@ import com.jpmobilelab.kmp.weatherapp.ui.composables.TransparentBox
 import com.jpmobilelab.kmp.weatherapp.ui.composables.WeatherValueWithLabelAndIcon
 import com.jpmobilelab.kmp.weatherapp.ui.core.UiText
 import com.jpmobilelab.kmp.weatherapp.ui.formatTimeDifference
+import com.jpmobilelab.kmp.weatherapp.ui.getDayName
 import kotlinx.datetime.TimeZone
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -115,16 +122,12 @@ fun WeatherScreen(
             )
         },
     ) { innerPadding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(verticalGradient)
                 .padding(innerPadding)
                 .padding(horizontal = spacing_2x)
-                .scrollable(
-                    state = rememberScrollState(),
-                    orientation = Orientation.Vertical
-                )
         ) {
             when (state) {
                 WeatherState.Loading -> {
@@ -132,12 +135,7 @@ fun WeatherScreen(
                 }
 
                 is WeatherState.Content -> {
-                    Text(
-                        text = state.location.asString(),
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    WeatherContent(state.weather)
+                    WeatherContent(state.location, state.weather)
                 }
 
                 is WeatherState.Error -> {
@@ -187,8 +185,16 @@ private fun WeatherLoading() {
 }
 
 @Composable
-private fun WeatherContent(weather: Weather) {
-    Column {
+private fun WeatherContent(location: UiText, weather: Weather) {
+    Column(
+        modifier = Modifier.verticalScroll(rememberScrollState())
+    ) {
+        Text(
+            text = location.asString(),
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+
         WeatherMainProperties(weather)
 
         Spacer(Modifier.height(spacing_6x))
@@ -198,6 +204,10 @@ private fun WeatherContent(weather: Weather) {
         Spacer(Modifier.height(spacing_6x))
 
         HourlyWeather(weather.hourly)
+
+        Spacer(Modifier.height(spacing_6x))
+
+        DailyWeather(weather.daily)
     }
 }
 
@@ -301,7 +311,7 @@ private fun HourlyWeather(hourlyWeather: List<HourlyWeather>) {
         Column {
             Text(
                 modifier = Modifier.padding(start = spacing_1x),
-                text = stringResource(Res.string.next_24_hours),
+                text = stringResource(Res.string.hourly_weather),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -364,6 +374,142 @@ private fun HourlyWeather(hourlyWeather: List<HourlyWeather>) {
                             )
                             Text(
                                 text = "${hourlyWeather[it].windSpeed10m} Km/h",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+}
+
+@Composable
+private fun DailyWeather(dailyWeather: List<DailyWeather>) {
+    if (dailyWeather.isEmpty()) return
+
+    TransparentBox(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column {
+            Text(
+                modifier = Modifier.padding(start = spacing_1x),
+                text = stringResource(Res.string.daily_weather),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(
+                modifier = Modifier.height(spacing_1x)
+            )
+            LazyRow {
+                items(dailyWeather.size) {
+                    Spacer(
+                        modifier = Modifier.padding(start = spacing_1x)
+                    )
+                    Column(
+                        modifier = Modifier.padding(end = spacing_2x),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = dailyWeather[it].time.getDayName().asString().uppercase(),
+                            style = MaterialTheme.typography.titleSmall
+                        )
+                        Image(
+                            painter = painterResource(dailyWeather[it].weatherDrawableResource),
+                            contentDescription = dailyWeather[it].weatherDescription
+                        )
+                        Row(
+                            modifier = Modifier.padding(start = spacing_1x),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Image(
+                                painter = painterResource(Res.drawable.ic_arrow_up),
+                                contentDescription = stringResource(Res.string.max),
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+
+                                )
+                            Row {
+                                Text(
+                                    text = dailyWeather[it].temperature2mMax.toString(),
+                                    style = MaterialTheme.typography.titleLarge,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    modifier = Modifier.padding(
+                                        start = spacing_0_5x,
+                                        top = spacing_0_5x,
+                                    ),
+                                    text = "°C",
+                                    style = MaterialTheme.typography.labelLarge,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                        }
+                        Row(
+                            modifier = Modifier.padding(start = spacing_1x),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Image(
+                                painter = painterResource(Res.drawable.ic_arrow_down),
+                                contentDescription = stringResource(Res.string.min),
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+
+                                )
+                            Row {
+                                Text(
+                                    text = dailyWeather[it].temperature2mMin.toString(),
+                                    style = MaterialTheme.typography.titleLarge,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    modifier = Modifier.padding(
+                                        start = spacing_0_5x,
+                                        top = spacing_0_5x,
+                                    ),
+                                    text = "°C",
+                                    style = MaterialTheme.typography.labelLarge,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                        }
+                        Row(modifier = Modifier.padding(top = spacing_0_5x)) {
+                            Image(
+                                painter = painterResource(Res.drawable.ic_rain),
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+                                modifier = Modifier.size(weatherHourlyIconSize)
+                            )
+                            Text(
+                                modifier = Modifier.padding(top = spacing_0_5x),
+                                text = "${dailyWeather[it].precipitationProbabilityMax}% ${stringResource(Res.string.max)}",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        Column(
+                            modifier = Modifier.padding(top = spacing_0_5x),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Row(modifier = Modifier.padding(top = spacing_0_5x)) {
+                                Image(
+                                    modifier = Modifier.size(weatherHourlyIconSizeSmall).padding(top = spacing_0_5x),
+                                    painter = painterResource(Res.drawable.ic_wind),
+                                    contentDescription = null,
+                                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+                                )
+                                Text(
+                                    text = stringResource(Res.string.max),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                            Text(
+                                text = "${dailyWeather[it].windSpeed10mMax} Km/h",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurface
                             )

@@ -12,4 +12,5 @@ data class WeatherDto(
     @SerialName("elevation") val elevation: Float,
     @SerialName("current") val current: CurrentWeatherDto,
     @SerialName("hourly") val hourly: HourlyWeatherDto? = null,
+    @SerialName("daily") val daily: DailyWeatherDto? = null,
 )

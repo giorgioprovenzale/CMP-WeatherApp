@@ -20,12 +20,14 @@ import cmp_weatherapp.composeapp.generated.resources.ic_0_clear_day
 import cmp_weatherapp.composeapp.generated.resources.ic_0_clear_night
 import cmp_weatherapp.composeapp.generated.resources.moderate_or_heavy_rain_shower
 import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentWeather
+import com.jpmobilelab.kmp.weatherapp.domain.model.DailyWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.HourlyWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
 import com.jpmobilelab.kmp.weatherapp.ui.composables.TransparentBox
 import com.jpmobilelab.kmp.weatherapp.ui.core.UiText
 import com.jpmobilelab.kmp.weatherapp.ui.weather.WeatherScreen
 import com.jpmobilelab.kmp.weatherapp.ui.weather.WeatherState
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.painterResource
 
@@ -96,7 +98,8 @@ fun createMockWeather() = Weather(
     timezoneAbbreviation = "CET",
     elevation = 122.0f,
     current = createMockCurrentWeather(),
-    hourly = MutableList(10) { createMockHourlyWeather() }
+    hourly = MutableList(10) { createMockHourlyWeather() },
+    daily = MutableList(10) { createMockDailyWeather() }
 )
 
 private fun createMockCurrentWeather() = CurrentWeather(
@@ -123,6 +126,17 @@ private fun createMockHourlyWeather() = HourlyWeather(
     weatherDescription = "Light Thunderstorms With Hail",
     dayDrawableResource = Res.drawable.ic_0_clear_day,
     nightDrawableResource = Res.drawable.ic_0_clear_night,
+)
+
+private fun createMockDailyWeather() = DailyWeather(
+    time = LocalDate.parse("2024-12-20"),
+    temperature2mMax = 22.5f,
+    temperature2mMin = 18.5f,
+    weatherCode = 2,
+    windSpeed10mMax = 10.0f,
+    precipitationProbabilityMax = 78,
+    weatherDescription = "Light Thunderstorms With Hail",
+    weatherDrawableResource = Res.drawable.ic_0_clear_day,
 )
 
 @Composable

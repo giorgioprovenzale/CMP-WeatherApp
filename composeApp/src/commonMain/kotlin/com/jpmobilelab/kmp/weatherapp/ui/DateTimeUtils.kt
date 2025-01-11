@@ -7,7 +7,11 @@ import cmp_weatherapp.composeapp.generated.resources.difference_in_hours
 import cmp_weatherapp.composeapp.generated.resources.difference_in_minutes
 import cmp_weatherapp.composeapp.generated.resources.difference_in_weeks
 import cmp_weatherapp.composeapp.generated.resources.just_now
+import cmp_weatherapp.composeapp.generated.resources.today
+import cmp_weatherapp.composeapp.generated.resources.tomorrow
+import com.jpmobilelab.kmp.weatherapp.ui.core.UiText
 import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
@@ -44,4 +48,20 @@ fun formatTimeDifference(targetDateTime: LocalDateTime, timeZone: TimeZone): Str
             else pluralStringResource(Res.plurals.difference_in_days, (weeks / 4).toInt(), (weeks / 4).toInt())
         }
     }
+}
+
+fun LocalDate.isToday(): Boolean {
+    val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).dayOfYear
+    return this.dayOfYear == today
+}
+
+fun LocalDate.isTomorrow(): Boolean {
+    val tomorrow = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).dayOfYear + 1
+    return this.dayOfYear == tomorrow
+}
+
+fun LocalDate.getDayName(): UiText = when {
+    this.isToday() -> UiText.StringResourceId(Res.string.today)
+    this.isTomorrow() -> UiText.StringResourceId(Res.string.tomorrow)
+    else -> UiText.DynamicString(this.dayOfWeek.name)
 }

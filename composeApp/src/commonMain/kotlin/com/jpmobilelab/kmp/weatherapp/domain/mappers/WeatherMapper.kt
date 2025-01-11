@@ -56,11 +56,14 @@ import cmp_weatherapp.composeapp.generated.resources.ic_96_thunderstorm_with_sli
 import cmp_weatherapp.composeapp.generated.resources.ic_99_thunderstorm_with_heavy_hail_day
 import cmp_weatherapp.composeapp.generated.resources.ic_99_thunderstorm_with_heavy_hail_night
 import com.jpmobilelab.kmp.weatherapp.data.dto.CurrentWeatherDto
+import com.jpmobilelab.kmp.weatherapp.data.dto.DailyWeatherDto
 import com.jpmobilelab.kmp.weatherapp.data.dto.HourlyWeatherDto
 import com.jpmobilelab.kmp.weatherapp.data.dto.WeatherDto
 import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentWeather
+import com.jpmobilelab.kmp.weatherapp.domain.model.DailyWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.HourlyWeather
 import com.jpmobilelab.kmp.weatherapp.domain.model.Weather
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import org.jetbrains.compose.resources.DrawableResource
 
@@ -71,7 +74,8 @@ fun WeatherDto.toWeather(): Weather = Weather(
     timezoneAbbreviation = timezoneAbbreviation,
     elevation = elevation,
     current = current.toCurrentWeather(),
-    hourly = hourly?.toHourlyWeathersList().orEmpty()
+    hourly = hourly?.toHourlyWeathersList().orEmpty(),
+    daily = daily?.toDailyWeathersList().orEmpty(),
 )
 
 fun CurrentWeatherDto.toCurrentWeather(): CurrentWeather = CurrentWeather(
@@ -108,6 +112,25 @@ fun HourlyWeatherDto.toHourlyWeathersList(): List<HourlyWeather> {
                 weatherCode[index], true
             ),
             nightDrawableResource = getDrawableResource(weatherCode[index], false)
+        )
+    }
+}
+
+fun DailyWeatherDto.toDailyWeathersList(): List<DailyWeather> {
+    return time.mapIndexed { index, time ->
+        DailyWeather(
+            time = LocalDate.parse(time),
+            temperature2mMax = temperature2mMax[index],
+            temperature2mMin = temperature2mMin[index],
+            weatherCode = weatherCode[index],
+            precipitationProbabilityMax = precipitationProbabilityMax[index],
+            windSpeed10mMax = windSpeed10mMax[index],
+            weatherDescription = getWeatherDescription(
+                weatherCode[index], true
+            ),
+            weatherDrawableResource = getDrawableResource(
+                weatherCode[index], true
+            )
         )
     }
 }

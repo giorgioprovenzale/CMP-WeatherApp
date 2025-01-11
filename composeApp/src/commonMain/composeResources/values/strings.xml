@@ -48,5 +48,10 @@
         <item quantity="other">%1$d months ago</item>
     </plurals>
     <string name="locations">Locations</string>
-    <string name="next_24_hours">Next 24 hours</string>
+    <string name="hourly_weather">Hourly Weather (24 hours)</string>">
+    <string name="daily_weather">Daily Weather</string>">
+    <string name="max">max</string>">
+    <string name="min">min</string>">
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
 </resources>
