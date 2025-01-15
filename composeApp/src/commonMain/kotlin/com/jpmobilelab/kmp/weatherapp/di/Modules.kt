@@ -1,6 +1,9 @@
 package com.jpmobilelab.kmp.weatherapp.di
 
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.jpmobilelab.kmp.weatherapp.data.core.HttpClientFactory
+import com.jpmobilelab.kmp.weatherapp.data.database.Database
+import com.jpmobilelab.kmp.weatherapp.data.database.DatabaseFactory
 import com.jpmobilelab.kmp.weatherapp.data.remote.search.KtorRemoteSearchDataSource
 import com.jpmobilelab.kmp.weatherapp.data.remote.search.RemoteSearchDataSource
 import com.jpmobilelab.kmp.weatherapp.data.remote.weather.KtorRemoteWeatherDataSource
@@ -27,6 +30,11 @@ val sharedModule = module {
 
     singleOf(::DefaultWeatherRepository).bind<WeatherRepository>()
     singleOf(::DefaultLocationRepository).bind<LocationRepository>()
+
+    single {
+        get<DatabaseFactory>().create().setDriver(BundledSQLiteDriver()).build()
+    }
+    single { get<Database>().locationDao }
 
     viewModelOf(::WeatherViewModel)
     viewModelOf(::SearchViewModel)
