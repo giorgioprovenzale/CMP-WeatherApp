@@ -34,7 +34,7 @@ val sharedModule = module {
     single {
         get<DatabaseFactory>().create().setDriver(BundledSQLiteDriver()).build()
     }
-    single { get<Database>().locationDao }
+    single { get<Database>().favoriteDao }
 
     viewModelOf(::WeatherViewModel)
     viewModelOf(::SearchViewModel)
