@@ -6,4 +6,5 @@ import com.jpmobilelab.kmp.weatherapp.domain.model.Location
 
 interface LocationRepository {
     suspend fun searchLocation(query: String): Result<List<Location>, DataError.Remote>
+    suspend fun saveLocation(location: Location)
 }
