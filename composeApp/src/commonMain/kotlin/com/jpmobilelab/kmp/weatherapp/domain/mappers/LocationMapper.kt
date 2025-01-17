@@ -27,3 +27,14 @@ fun Location.toLocationEntity(): LocationEntity = LocationEntity(
     country = country,
     flagUrl = flagUrl
 )
+
+fun LocationEntity.toLocation(): Location = Location(
+    id = id,
+    name = name,
+    subName = subName,
+    latitude = latitude,
+    longitude = longitude,
+    timezone = timezone,
+    country = country,
+    flagUrl = flagUrl
+)
