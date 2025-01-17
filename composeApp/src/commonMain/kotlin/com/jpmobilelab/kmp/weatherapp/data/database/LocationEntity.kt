@@ -7,8 +7,12 @@ const val LOCATION_TABLE_NAME = "location_table"
 
 @Entity(tableName = LOCATION_TABLE_NAME)
 data class LocationEntity(
-    @PrimaryKey val id: String,
+    @PrimaryKey val id: Int,
     val name: String,
+    val subName: String,
     val latitude: Float,
     val longitude: Float,
+    val timezone: String,
+    val country: String,
+    val flagUrl: String
 )

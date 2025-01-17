@@ -12,8 +12,8 @@ interface LocationDao {
     suspend fun upsert(book: LocationEntity)
 
     @Query("SELECT * FROM $LOCATION_TABLE_NAME")
-    fun getFavoriteLocations(): Flow<List<LocationEntity>>
+    fun observeLocations(): Flow<List<LocationEntity>>
 
     @Query("DELETE FROM $LOCATION_TABLE_NAME WHERE id = :id")
-    suspend fun deleteLocation(id: String)
+    suspend fun deleteLocation(id: Int)
 }
