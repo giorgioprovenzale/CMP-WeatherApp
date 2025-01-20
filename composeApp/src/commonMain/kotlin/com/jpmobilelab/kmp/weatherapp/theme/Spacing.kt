@@ -31,6 +31,8 @@ val weatherPropertyIconSize = 30.dp
 val weatherHourlyIconSize = 24.dp
 val weatherHourlyIconSizeSmall = 16.dp
 
+val searchItemHeight = 100.dp
+
 val LightColorPalette = lightColorScheme(
 )
 

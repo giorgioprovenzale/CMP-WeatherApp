@@ -45,6 +45,7 @@ import cmp_weatherapp.composeapp.generated.resources.locations
 import cmp_weatherapp.composeapp.generated.resources.search_hint
 import coil3.compose.AsyncImage
 import com.jpmobilelab.kmp.weatherapp.domain.model.Location
+import com.jpmobilelab.kmp.weatherapp.theme.searchItemHeight
 import com.jpmobilelab.kmp.weatherapp.theme.spacing_1x
 import com.jpmobilelab.kmp.weatherapp.theme.spacing_2x
 import com.jpmobilelab.kmp.weatherapp.theme.verticalGradient
@@ -193,12 +194,12 @@ fun LocationResult(
     TransparentBox(
         modifier = Modifier
             .fillMaxWidth()
+            .height(searchItemHeight)
             .clickable { onClick(location) }
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = spacing_1x),
+                .fillMaxSize(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -207,12 +208,24 @@ fun LocationResult(
                     .padding(end = spacing_1x)
                     .weight(0.9f),
             ) {
-                Text(text = location.name)
+                Text(
+                    text = location.name,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
                 if (location.country.isNotBlank()) {
-                    Text(text = location.country)
+                    Text(
+                        text = location.country,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
                 }
                 if (location.subName.isNotBlank()) {
-                    Text(text = location.subName)
+                    Text(
+                        text = location.subName,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
                 }
             }
             Column(
