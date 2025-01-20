@@ -10,3 +10,9 @@ data class Location(
     val country: String,
     val flagUrl: String
 )
+
+data class CurrentLocation(
+    val name: String,
+    val latitude: Float,
+    val longitude: Float,
+)

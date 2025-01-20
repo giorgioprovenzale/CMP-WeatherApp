@@ -10,10 +10,13 @@ import com.jpmobilelab.kmp.weatherapp.data.remote.search.KtorRemoteSearchDataSou
 import com.jpmobilelab.kmp.weatherapp.data.remote.search.RemoteSearchDataSource
 import com.jpmobilelab.kmp.weatherapp.data.remote.weather.KtorRemoteWeatherDataSource
 import com.jpmobilelab.kmp.weatherapp.data.remote.weather.RemoteWeatherDataSource
+import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentLocation
 import com.jpmobilelab.kmp.weatherapp.domain.repository.DefaultLocationRepository
 import com.jpmobilelab.kmp.weatherapp.domain.repository.DefaultWeatherRepository
 import com.jpmobilelab.kmp.weatherapp.domain.repository.LocationRepository
 import com.jpmobilelab.kmp.weatherapp.domain.repository.WeatherRepository
+import com.jpmobilelab.kmp.weatherapp.domain.stateholder.CurrentLocationStateHolder
+import com.jpmobilelab.kmp.weatherapp.domain.stateholder.StateHolder
 import com.jpmobilelab.kmp.weatherapp.ui.search.SearchViewModel
 import com.jpmobilelab.kmp.weatherapp.ui.weather.WeatherViewModel
 import org.koin.core.module.Module
@@ -32,6 +35,8 @@ val sharedModule = module {
 
     singleOf(::DefaultWeatherRepository).bind<WeatherRepository>()
     singleOf(::DefaultLocationRepository).bind<LocationRepository>()
+
+    singleOf(::CurrentLocationStateHolder).bind<StateHolder<CurrentLocation?>>()
 
     single {
         get<DatabaseFactory>().create().setDriver(BundledSQLiteDriver()).build()
