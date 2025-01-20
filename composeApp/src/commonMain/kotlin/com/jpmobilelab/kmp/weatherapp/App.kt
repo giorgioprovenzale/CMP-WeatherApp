@@ -3,6 +3,7 @@ package com.jpmobilelab.kmp.weatherapp
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -39,22 +40,42 @@ fun App() {
                 composable<Route.SearchRoute> {
                     SearchScreenRoot(
                         onLocationClick = { location ->
-                            navController.navigate(
-                                Route.WeatherHome(
-                                    latitude = location.latitude,
-                                    longitude = location.longitude,
-                                    name = location.name
-                                )
-                            ) {
-                                popUpTo(navController.graph.startDestinationId) { inclusive = true }
-                                launchSingleTop = true
-                            }
+                            navController.navigateToWeatherScreen(
+                                latitude = location.latitude,
+                                longitude = location.longitude,
+                                name = location.name
+                            )
+                        },
+                        onCurrentLocationClick = { currentLocation ->
+                            navController.navigateToWeatherScreen(
+                                latitude = currentLocation.latitude,
+                                longitude = currentLocation.longitude,
+                                name = currentLocation.name
+                            )
                         },
                         onBackClick = navController::popBackStack
                     )
                 }
+
             }
         }
+    }
+}
+
+private fun NavHostController.navigateToWeatherScreen(
+    latitude: Float,
+    longitude: Float,
+    name: String
+) {
+    navigate(
+        Route.WeatherHome(
+            latitude = latitude,
+            longitude = longitude,
+            name = name
+        )
+    ) {
+        popUpTo(graph.startDestinationId) { inclusive = true }
+        launchSingleTop = true
     }
 }
 

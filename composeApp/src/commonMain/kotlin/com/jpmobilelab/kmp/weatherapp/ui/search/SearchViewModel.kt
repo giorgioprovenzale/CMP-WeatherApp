@@ -5,7 +5,9 @@ package com.jpmobilelab.kmp.weatherapp.ui.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jpmobilelab.kmp.weatherapp.domain.core.onSuccess
+import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentLocation
 import com.jpmobilelab.kmp.weatherapp.domain.repository.LocationRepository
+import com.jpmobilelab.kmp.weatherapp.domain.stateholder.StateHolder
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,20 +23,22 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
-    private val locationRepository: LocationRepository
+    private val locationRepository: LocationRepository,
+    private val currentLocationStateHolder: StateHolder<CurrentLocation?>
 ) : ViewModel() {
 
     private var searchJob: Job? = null
 
-    private val _state = MutableStateFlow<SearchScreenState>(SearchScreenState())
+    private val _state = MutableStateFlow(SearchScreenState())
     val state = _state
         .onStart {
+            observeCurrentLocation()
             observeSearchQuery()
         }
         .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000L),
-            _state.value
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000L),
+            initialValue = _state.value
         )
 
     fun onAction(action: SearchScreenAction) {
@@ -48,9 +52,8 @@ class SearchViewModel(
                 }
             }
 
-            is SearchScreenAction.OnLocationClick -> {
-                println(action.location.toString())
-            }
+            is SearchScreenAction.OnCurrentLocationClick,
+            is SearchScreenAction.OnLocationClick -> Unit
         }
     }
 
@@ -61,10 +64,7 @@ class SearchViewModel(
             .debounce(500L)
             .onEach { query ->
                 when {
-                    query.isBlank() -> {
-
-                    }
-
+                    query.isBlank() -> Unit
                     query.length >= 2 -> {
                         searchJob?.cancel()
                         searchJob = searchLocations(query)
@@ -72,6 +72,12 @@ class SearchViewModel(
                 }
             }
             .launchIn(viewModelScope)
+    }
+
+    private fun observeCurrentLocation() {
+        currentLocationStateHolder.state.onEach { currentLocation ->
+            _state.update { it.copy(currentLocation = currentLocation) }
+        }.launchIn(viewModelScope)
     }
 
     private fun searchLocations(query: String) = viewModelScope.launch {

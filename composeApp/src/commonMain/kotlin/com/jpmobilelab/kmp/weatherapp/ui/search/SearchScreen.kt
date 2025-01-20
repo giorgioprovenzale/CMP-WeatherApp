@@ -41,9 +41,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import cmp_weatherapp.composeapp.generated.resources.Res
 import cmp_weatherapp.composeapp.generated.resources.close_hint
+import cmp_weatherapp.composeapp.generated.resources.current_location
 import cmp_weatherapp.composeapp.generated.resources.locations
 import cmp_weatherapp.composeapp.generated.resources.search_hint
+import cmp_weatherapp.composeapp.generated.resources.search_results
 import coil3.compose.AsyncImage
+import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentLocation
 import com.jpmobilelab.kmp.weatherapp.domain.model.Location
 import com.jpmobilelab.kmp.weatherapp.theme.searchItemHeight
 import com.jpmobilelab.kmp.weatherapp.theme.spacing_1x
@@ -59,6 +62,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun SearchScreenRoot(
     viewModel: SearchViewModel = koinViewModel(),
     onLocationClick: (Location) -> Unit,
+    onCurrentLocationClick: (CurrentLocation) -> Unit,
     onBackClick: () -> Unit = {}
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -70,6 +74,7 @@ fun SearchScreenRoot(
             when (action) {
                 is SearchScreenAction.OnSearchQueryChange -> viewModel.onAction(action)
                 is SearchScreenAction.OnLocationClick -> onLocationClick(action.location)
+                is SearchScreenAction.OnCurrentLocationClick -> onCurrentLocationClick(action.currentLocation)
             }
         }
     )
@@ -117,12 +122,33 @@ fun SearchScreen(
             )
             Spacer(modifier = Modifier.height(spacing_2x))
             LazyColumn {
+
+                state.currentLocation?.let { currentLocation ->
+                    item {
+                        CurrentLocationItem(
+                            currentLocation = currentLocation,
+                            onClick = { onAction(SearchScreenAction.OnCurrentLocationClick(currentLocation)) })
+                        Spacer(modifier = Modifier.height(spacing_2x))
+                    }
+                }
+
+                if (state.searchResults.isNotEmpty()) {
+                    item {
+                        Text(
+                            modifier = Modifier.padding(bottom = spacing_2x),
+                            text = stringResource(Res.string.search_results),
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
                 items(state.searchResults.size) { index ->
                     LocationResult(
                         location = state.searchResults[index],
                         onClick = { onAction(SearchScreenAction.OnLocationClick(it)) })
                     Spacer(modifier = Modifier.height(spacing_2x))
                 }
+
                 item {
                     Spacer(modifier = Modifier.height(spacing_2x))
                 }
@@ -184,6 +210,46 @@ fun SearchBox(
         modifier = modifier
             .minimumInteractiveComponentSize()
     )
+}
+
+@Composable
+fun CurrentLocationItem(
+    currentLocation: CurrentLocation,
+    onClick: (CurrentLocation) -> Unit = {}
+) {
+    TransparentBox(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(searchItemHeight)
+            .clickable { onClick(currentLocation) }
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(end = spacing_1x)
+                    .weight(0.9f),
+            ) {
+                Text(
+                    text = stringResource(Res.string.current_location),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                if (currentLocation.name.isNotBlank()) {
+                    Text(
+                        text = currentLocation.name,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+        }
+
+    }
 }
 
 @Composable
