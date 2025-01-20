@@ -2,6 +2,7 @@ package com.jpmobilelab.kmp.weatherapp.ui.core
 
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 
 
@@ -17,6 +18,13 @@ sealed interface UiText {
         return when(this) {
             is DynamicString -> value
             is StringResourceId -> stringResource(resource = id, formatArgs = args)
+        }
+    }
+
+    suspend fun getString(): String {
+        return when (this) {
+            is DynamicString -> value
+            is StringResourceId -> getString(resource = id, formatArgs = args)
         }
     }
 }
