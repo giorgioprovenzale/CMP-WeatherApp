@@ -9,7 +9,9 @@ import cmp_weatherapp.composeapp.generated.resources.error_location_permission_d
 import cmp_weatherapp.composeapp.generated.resources.error_location_permission_denied_forever
 import cmp_weatherapp.composeapp.generated.resources.error_location_service_not_supported
 import com.jpmobilelab.kmp.weatherapp.domain.core.onSuccess
+import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentLocation
 import com.jpmobilelab.kmp.weatherapp.domain.repository.WeatherRepository
+import com.jpmobilelab.kmp.weatherapp.domain.stateholder.StateHolder
 import com.jpmobilelab.kmp.weatherapp.ui.core.UiText
 import dev.jordond.compass.geocoder.Geocoder
 import dev.jordond.compass.geocoder.placeOrNull
@@ -23,7 +25,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class WeatherViewModel(
-    private val weatherRepository: WeatherRepository
+    private val weatherRepository: WeatherRepository,
+    private val currentLocationStateHolder: StateHolder<CurrentLocation?>
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<WeatherState>(WeatherState.Loading)
@@ -56,15 +59,25 @@ class WeatherViewModel(
                 is GeolocatorResult.Success -> {
                     val geocoder = Geocoder()
                     val place = geocoder.placeOrNull(result.data.coordinates)
+                    val latitude = result.data.coordinates.latitude.toFloat()
+                    val longitude = result.data.coordinates.longitude.toFloat()
+                    val locationName = if (place?.locality != null)
+                        UiText.DynamicString(place.locality.orEmpty())
+                    else
+                        UiText.StringResourceId(
+                            Res.string.current_location
+                        )
                     fetchWeather(
-                        latitude = result.data.coordinates.latitude.toFloat(),
-                        longitude = result.data.coordinates.longitude.toFloat(),
-                        locationName = if (place?.locality != null)
-                            UiText.DynamicString(place.locality.orEmpty())
-                        else
-                            UiText.StringResourceId(
-                                Res.string.current_location
-                            )
+                        latitude = latitude,
+                        longitude = longitude,
+                        locationName = locationName
+                    )
+                    currentLocationStateHolder.update(
+                        CurrentLocation(
+                            name = locationName.getString(),
+                            latitude = latitude,
+                            longitude = longitude
+                        )
                     )
                 }
 
