@@ -8,6 +8,17 @@ locations, view current weather conditions, and keeps track of recent searches u
 This project was inspired by [Philipp Lackner](https://www.youtube.com/@PhilippLackner) and his excellent video tutorial. You can find his
 work here: [https://www.youtube.com/watch?v=WT9-4DXUqsM](https://www.youtube.com/watch?v=WT9-4DXUqsM)
 
+## Video
+
+#### Android
+ 
+https://github.com/user-attachments/assets/6da25116-ffa8-41d5-a551-a597b5d175ae
+
+#### IOS
+
+
+https://github.com/giorgioprovenzale/KmpNewsApp/assets/3489832/474dbc43-5ba4-442b-a487-28d8b3af7c74
+
 ## Features
 
 * **Multiplatform:** Built with Compose Multiplatform, ensuring code reusability across different platforms (Android, iOS).
@@ -27,6 +38,9 @@ work here: [https://www.youtube.com/watch?v=WT9-4DXUqsM](https://www.youtube.com
 * **Room:** For local database management of recent searches.
 * **Compass:** For location and permission management: [https://github.com/jordond/compass](https://github.com/jordond/compass)
 * **Open-Meteo.com:** For weather data: [open-meteo.com](https://open-meteo.com)
+
+
+
 
 ## Architectural Patterns
 
