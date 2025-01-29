@@ -16,8 +16,7 @@ https://github.com/user-attachments/assets/6da25116-ffa8-41d5-a551-a597b5d175ae
 
 #### IOS
 
-
-https://github.com/giorgioprovenzale/KmpNewsApp/assets/3489832/474dbc43-5ba4-442b-a487-28d8b3af7c74
+https://github.com/user-attachments/assets/891f23aa-1b63-4baa-896a-5bcee941d1f5
 
 ## Features
 
