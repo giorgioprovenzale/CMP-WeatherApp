@@ -15,7 +15,7 @@ work here: [https://www.youtube.com/watch?v=WT9-4DXUqsM](https://www.youtube.com
 * **Current Weather Data:** Displays real-time weather information such as temperature, conditions, and wind speed.
 * **Forecast Data:** Displays forecast information such as temperature, conditions, and wind speed.
 * **Recent Searches:** Saves recently searched locations to a local database for quick access.
-* **Current Location:** Fetches user current location using `compass` library.
+* **Current Location:** Fetches user current location using [Compass](https://github.com/jordond/compass) library.
 
 ## Tech Stack
 
@@ -26,7 +26,7 @@ work here: [https://www.youtube.com/watch?v=WT9-4DXUqsM](https://www.youtube.com
 * **ViewModel:** To manage UI-related data and lifecycle.
 * **Room:** For local database management of recent searches.
 * **Compass:** For location and permission management: [https://github.com/jordond/compass](https://github.com/jordond/compass)
-* **Open-Meteo.com:** For weather data.
+* **Open-Meteo.com:** For weather data: [open-meteo.com](https://open-meteo.com)
 
 ## Architectural Patterns
 
