@@ -6,5 +6,6 @@ import com.jpmobilelab.kmp.weatherapp.domain.model.Location
 data class SearchScreenState(
     val searchQuery: String = "",
     val currentLocation: CurrentLocation? = null,
-    val searchResults: List<Location> = emptyList()
+    val searchResults: List<Location> = emptyList(),
+    val recentLocations: List<Location> = emptyList()
 )

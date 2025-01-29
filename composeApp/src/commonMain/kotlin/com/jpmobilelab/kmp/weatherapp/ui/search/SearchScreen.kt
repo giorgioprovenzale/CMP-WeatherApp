@@ -43,6 +43,7 @@ import cmp_weatherapp.composeapp.generated.resources.Res
 import cmp_weatherapp.composeapp.generated.resources.close_hint
 import cmp_weatherapp.composeapp.generated.resources.current_location
 import cmp_weatherapp.composeapp.generated.resources.locations
+import cmp_weatherapp.composeapp.generated.resources.recent_searches
 import cmp_weatherapp.composeapp.generated.resources.search_hint
 import cmp_weatherapp.composeapp.generated.resources.search_results
 import coil3.compose.AsyncImage
@@ -71,8 +72,9 @@ fun SearchScreenRoot(
         state = state,
         onBackClick = onBackClick,
         onAction = { action ->
+            viewModel.onAction(action)
             when (action) {
-                is SearchScreenAction.OnSearchQueryChange -> viewModel.onAction(action)
+                is SearchScreenAction.OnSearchQueryChange -> Unit
                 is SearchScreenAction.OnLocationClick -> onLocationClick(action.location)
                 is SearchScreenAction.OnCurrentLocationClick -> onCurrentLocationClick(action.currentLocation)
             }
@@ -128,6 +130,24 @@ fun SearchScreen(
                         CurrentLocationItem(
                             currentLocation = currentLocation,
                             onClick = { onAction(SearchScreenAction.OnCurrentLocationClick(currentLocation)) })
+                        Spacer(modifier = Modifier.height(spacing_2x))
+                    }
+                }
+
+                if (state.searchResults.isEmpty() && state.recentLocations.isNotEmpty()) {
+                    item {
+                        Text(
+                            modifier = Modifier.padding(bottom = spacing_2x),
+                            text = stringResource(Res.string.recent_searches),
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+
+                    items(state.recentLocations.size) { index ->
+                        LocationResult(
+                            location = state.recentLocations[index],
+                            onClick = { onAction(SearchScreenAction.OnLocationClick(it)) })
                         Spacer(modifier = Modifier.height(spacing_2x))
                     }
                 }

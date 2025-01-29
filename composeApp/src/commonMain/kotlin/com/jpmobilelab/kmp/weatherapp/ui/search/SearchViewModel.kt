@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jpmobilelab.kmp.weatherapp.domain.core.onSuccess
 import com.jpmobilelab.kmp.weatherapp.domain.model.CurrentLocation
+import com.jpmobilelab.kmp.weatherapp.domain.model.Location
 import com.jpmobilelab.kmp.weatherapp.domain.repository.LocationRepository
 import com.jpmobilelab.kmp.weatherapp.domain.stateholder.StateHolder
 import kotlinx.coroutines.FlowPreview
@@ -33,6 +34,7 @@ class SearchViewModel(
     val state = _state
         .onStart {
             observeCurrentLocation()
+            observeRecentLocations()
             observeSearchQuery()
         }
         .stateIn(
@@ -51,9 +53,8 @@ class SearchViewModel(
                     )
                 }
             }
-
-            is SearchScreenAction.OnCurrentLocationClick,
-            is SearchScreenAction.OnLocationClick -> Unit
+            is SearchScreenAction.OnLocationClick -> saveLocation(action.location)
+            is SearchScreenAction.OnCurrentLocationClick -> Unit
         }
     }
 
@@ -77,6 +78,18 @@ class SearchViewModel(
     private fun observeCurrentLocation() {
         currentLocationStateHolder.state.onEach { currentLocation ->
             _state.update { it.copy(currentLocation = currentLocation) }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun saveLocation(location: Location) = viewModelScope.launch {
+        locationRepository.saveLocation(location)
+    }
+
+    private fun observeRecentLocations() {
+        locationRepository.observeLocations().onEach { recentLocations ->
+            _state.update {
+                it.copy(recentLocations = recentLocations)
+            }
         }.launchIn(viewModelScope)
     }
 
