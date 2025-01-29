@@ -35,6 +35,7 @@ https://github.com/user-attachments/assets/891f23aa-1b63-4baa-896a-5bcee941d1f5
 * **Jetpack Navigation:** For navigation between screens.
 * **ViewModel:** To manage UI-related data and lifecycle.
 * **Room:** For local database management of recent searches.
+* **Koin:** Dependencies injection.
 * **Compass:** For location and permission management: [https://github.com/jordond/compass](https://github.com/jordond/compass)
 * **Open-Meteo.com:** For weather data: [open-meteo.com](https://open-meteo.com)
 
